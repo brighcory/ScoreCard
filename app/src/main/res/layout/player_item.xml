@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="35dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/scoreEditText"
+        android:layout_toLeftOf="@+id/scoreEditText"
+        android:layout_toStartOf="@+id/scoreEditText"
+        android:text="+"
+        android:textSize="14sp"/>
+
+    <EditText
+        android:id="@+id/scoreEditText"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/subtractButton"
+        android:layout_toStartOf="@+id/subtractButton"
+        android:ems="10"
+        android:hint="0"
+        android:inputType="number"
+        android:textAlignment="center"
+        android:textSize="18sp"/>
+
+    <Button
+        android:id="@+id/subtractButton"
+        android:layout_width="35dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/addButton"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="-"
+        android:textSize="14sp"/>
+
+    <EditText
+        android:id="@+id/playerNameEditView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/textView"
+        android:layout_toStartOf="@+id/textView"
+        android:ems="10"
+        android:inputType="textPersonName"
+        tools:text="Player"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/addButton"
+        android:layout_toStartOf="@+id/addButton"
+        android:textSize="30sp"
+        tools:text="5000"/>
+</RelativeLayout>

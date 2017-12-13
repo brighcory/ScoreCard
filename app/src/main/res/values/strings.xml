@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Score Card</string>
+    <string name="action_settings">Settings</string>
+    <string name="winner">Winner</string>
+    <string name="game_name">Game Name</string>
+    <string-array name="dice">
+        <item>1 Dice</item>
+        <item>2 Dice</item>
+        <item>3 Dice</item>
+    </string-array>
+    <string name="title_activity_play_game">PlayGameActivity</string>
+</resources>
