@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> {
-    private ArrayList<Game> mGames;
+    private ArrayList<Game> mGames = new ArrayList<>();
     private Context mContext;
 
     public GamesAdapter(Context context, ArrayList<Game> games) {
@@ -35,7 +35,8 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(GamesAdapter.ViewHolder holder, int position) {
         holder.mGameName.setText(mGames.get(position).getGameName());
-
+        holder.mWinnerName.setText("Holder");
+        holder.mScoreOfWinner.setText("0");
     }
 
     @Override
@@ -45,8 +46,14 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView mGameName;
+        TextView mWinnerName;
+        TextView mScoreOfWinner;
+
         public ViewHolder(View itemView) {
             super(itemView);
+            mGameName = itemView.findViewById(R.id.gameNameTextView);
+            mWinnerName = itemView.findViewById(R.id.winnerTextView);
+            mScoreOfWinner = itemView.findViewById(R.id.scoreTextView);
         }
     }
 }

@@ -5,14 +5,14 @@ package com.merlin.bright.cory.scorecard.gameObjects;
  */
 
 public class Score {
+    private Game mGame;
     private int mScore;
     private Player mPlayer;
-    private Team mTeam;
 
-    public Score(int score, Player player, Team team) {
+    public Score(int score, Player player, Game game) {
         mScore = score;
         mPlayer = player;
-        mTeam = team;
+        mGame = game;
     }
 
     public int getScore() {
@@ -31,11 +31,11 @@ public class Score {
         mPlayer = player;
     }
 
-    public Team getTeam() {
-        return mTeam;
+    public Game getGame() {
+        return mGame;
     }
 
-    public void setTeam(Team team) {
-        mTeam = team;
+    public void setGame(Game game) {
+        mGame = game;
     }
 }

@@ -1,42 +1,45 @@
 package com.merlin.bright.cory.scorecard.ui;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
-import com.merlin.bright.cory.scorecard.adapters.GamesAdapter;
 import com.merlin.bright.cory.scorecard.R;
+import com.merlin.bright.cory.scorecard.adapters.GamesAdapter;
 import com.merlin.bright.cory.scorecard.gameObjects.Game;
 
 import java.util.ArrayList;
 
-public class MainActivity extends ListActivity {
-    private ArrayList<Game> mGames = new ArrayList<Game>();
-    private GamesAdapter mGamesAdapter;
+public class MainActivity extends Activity {
+    private ArrayList<Game> mGames = new ArrayList<>();
+    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addGame();
-                mGamesAdapter.notifyDataSetChanged();
             }
         });
 
-        mGames.add(new Game("Game",false, false));
-        mGamesAdapter = new GamesAdapter(this, mGames);
-        setListAdapter(mGamesAdapter);
+        mGames.add(new Game("Game", false, false, false));
+        mRecyclerView = findViewById(R.id.gameList);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(new GamesAdapter(this, mGames));
+
     }
 
     private void addGame() {
@@ -44,7 +47,7 @@ public class MainActivity extends ListActivity {
         startActivity(NewGameIntent);
     }
 
-    private void removeGame(int position){
+    private void removeGame(int position) {
         mGames.remove(position);
     }
 
