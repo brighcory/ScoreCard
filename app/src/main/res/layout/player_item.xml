@@ -43,14 +43,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/textView"
-        android:layout_toStartOf="@+id/textView"
+        android:layout_toLeftOf="@+id/playerScoreTextView"
+        android:layout_toStartOf="@+id/playerScoreTextView"
         android:ems="10"
         android:inputType="textPersonName"
         tools:text="Player"/>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/playerScoreTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
