@@ -1,4 +1,4 @@
-package com.merlin.bright.cory.scorecard;
+package com.merlin.bright.cory.scorecard.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.merlin.bright.cory.scorecard.R;
+import com.merlin.bright.cory.scorecard.gameObjects.Player;
+import com.merlin.bright.cory.scorecard.gameObjects.Score;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.merlin.bright.cory.scorecard;
+package com.merlin.bright.cory.scorecard.database;
 
 import android.provider.BaseColumns;
 

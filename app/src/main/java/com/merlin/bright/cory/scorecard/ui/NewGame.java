@@ -1,4 +1,4 @@
-package com.merlin.bright.cory.scorecard;
+package com.merlin.bright.cory.scorecard.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,8 +9,11 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.merlin.bright.cory.scorecard.R;
+import com.merlin.bright.cory.scorecard.gameObjects.Game;
+import com.merlin.bright.cory.scorecard.gameObjects.Player;
 
 public class NewGame extends AppCompatActivity {
     private Context mContext;

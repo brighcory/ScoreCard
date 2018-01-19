@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.merlin.bright.cory.scorecard.NewGame">
+    tools:context="com.merlin.bright.cory.scorecard.ui.NewGame">
 
     <EditText
         android:id="@+id/gameNameEditText"

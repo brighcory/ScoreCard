@@ -1,4 +1,4 @@
-package com.merlin.bright.cory.scorecard;
+package com.merlin.bright.cory.scorecard.ui;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -8,6 +8,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.merlin.bright.cory.scorecard.adapters.GamesAdapter;
+import com.merlin.bright.cory.scorecard.R;
+import com.merlin.bright.cory.scorecard.gameObjects.Game;
 
 import java.util.ArrayList;
 

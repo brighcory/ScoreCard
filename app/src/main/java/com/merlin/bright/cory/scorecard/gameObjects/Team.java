@@ -1,4 +1,4 @@
-package com.merlin.bright.cory.scorecard;
+package com.merlin.bright.cory.scorecard.gameObjects;
 
 import android.widget.ArrayAdapter;
 
