@@ -11,18 +11,14 @@ public class Game {
     private Player mWinner;
     private boolean mWinnerHighest = true;
     private boolean mTeam = false;
-    private boolean mTimer = false;
-    private ArrayList<Score> mScores = new ArrayList<>();
     private ArrayList<Player> mPlayers = new ArrayList<>();
 
-    public Game(String gameName, boolean winnerHighest, boolean team, boolean timer) {
+    public Game(String gameName, boolean winnerHighest, boolean team) {
         mGameName = gameName;
         mWinnerHighest = winnerHighest;
         mTeam = team;
-        mTimer = timer;
-        Player player = new Player("New Player");
+        Player player = new Player("New Player", 0);
         mPlayers.add(player);
-        mScores.add(new Score(0, player, this));
     }
 
     public String getGameName() {
@@ -41,24 +37,15 @@ public class Game {
         mTeam = team;
     }
 
-    public boolean isTimer() {
-        return mTimer;
-    }
-
-    public void setTimer(boolean timer) {
-        mTimer = timer;
-    }
-
     public Player getWinner() {
-        Score scoreWinner =
-                new Score(0, new Player("No Winner"), this);
+        mWinner = mPlayers.get(0);
         if (mWinnerHighest) {
-            for (Score s : mScores) {
-                scoreWinner = (s.getScore() > scoreWinner.getScore()) ? s : scoreWinner;
+            for (Player player : mPlayers) {
+                mWinner = (mWinner.getScore() > player.getScore()) ? mWinner : player;
             }
-        }else {
-            for (Score s :mScores){
-                scoreWinner = (s.getScore() < scoreWinner.getScore()) ? s : scoreWinner;
+        } else {
+            for (Player player : mPlayers) {
+                mWinner = (mWinner.getScore() < player.getScore()) ? mWinner : player;
             }
         }
         return mWinner;
@@ -70,5 +57,9 @@ public class Game {
 
     public void setWinnerHighest(boolean winnerHighest) {
         mWinnerHighest = winnerHighest;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return mPlayers;
     }
 }

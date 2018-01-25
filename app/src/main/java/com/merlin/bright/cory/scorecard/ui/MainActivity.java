@@ -18,14 +18,22 @@ import com.merlin.bright.cory.scorecard.gameObjects.Game;
 import java.util.ArrayList;
 
 public class MainActivity extends Activity {
-    private ArrayList<Game> mGames = new ArrayList<>();
+    public static ArrayList<Game> mGames = new ArrayList<>();
     private RecyclerView mRecyclerView;
+    private GamesAdapter gamesAdapter;
+    public static final String NEW_GAME_INDEX = "New_Game_Index";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
+
+        mGames.add(new Game("Game", false, false));
+        mRecyclerView = findViewById(R.id.gameList);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        gamesAdapter = new GamesAdapter(this, mGames);
+        mRecyclerView.setAdapter(gamesAdapter);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -35,16 +43,15 @@ public class MainActivity extends Activity {
             }
         });
 
-        mGames.add(new Game("Game", false, false, false));
-        mRecyclerView = findViewById(R.id.gameList);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new GamesAdapter(this, mGames));
 
     }
 
     private void addGame() {
-        Intent NewGameIntent = new Intent(this, NewGame.class);
-        startActivity(NewGameIntent);
+        mGames.add(new Game("Game's Name", false,false));
+        gamesAdapter.notifyDataSetChanged();
+        Intent newGameIntent = new Intent(this, PlayGameActivity.class);
+        newGameIntent.putExtra(NEW_GAME_INDEX, mGames.size()-1);
+        startActivity(newGameIntent);
     }
 
     private void removeGame(int position) {

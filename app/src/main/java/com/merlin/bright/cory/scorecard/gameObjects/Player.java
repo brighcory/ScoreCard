@@ -6,9 +6,11 @@ package com.merlin.bright.cory.scorecard.gameObjects;
 
 public class Player {
     private String mPlayerName;
+    private int mScore;
 
-    public Player(String playerName) {
+    public Player(String playerName, int score) {
         mPlayerName = playerName;
+        mScore = score;
     }
 
     public String getPlayerName() {
@@ -17,5 +19,13 @@ public class Player {
 
     public void setPlayerName(String playerName) {
         mPlayerName = playerName;
+    }
+
+    public int getScore() {
+        return mScore;
+    }
+
+    public void setScore(int score) {
+        mScore = score;
     }
 }

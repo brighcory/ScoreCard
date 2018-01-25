@@ -9,4 +9,6 @@
         <item>3 Dice</item>
     </string-array>
     <string name="title_activity_play_game">PlayGameActivity</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
 </resources>

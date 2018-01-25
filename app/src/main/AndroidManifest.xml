@@ -19,8 +19,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.NewGame">
-        </activity>
         <activity
             android:name=".ui.PlayGameActivity"
             android:label="@string/title_activity_play_game"
