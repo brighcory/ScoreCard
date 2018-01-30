@@ -1,16 +1,24 @@
 package com.merlin.bright.cory.scorecard.gameObjects;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.util.ArrayList;
 
 /**
  * Created by cory on 12/6/17.
  */
-
+@Entity
 public class Game {
+    @PrimaryKey (autoGenerate = true)
+    private int id;
+
     private String mGameName;
     private Player mWinner;
     private boolean mWinnerHighest = true;
     private boolean mTeam = false;
+    @Ignore
     private ArrayList<Player> mPlayers = new ArrayList<>();
 
     public Game(String gameName, boolean winnerHighest, boolean team) {

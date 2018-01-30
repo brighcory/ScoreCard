@@ -29,7 +29,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
 
-        mGames.add(new Game("Game", false, false));
+        mGames.add(new Game("Game", true, false));
+
         mRecyclerView = findViewById(R.id.gameList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         gamesAdapter = new GamesAdapter(this, mGames);
@@ -47,11 +48,16 @@ public class MainActivity extends Activity {
     }
 
     private void addGame() {
-        mGames.add(new Game("Game's Name", false,false));
+        openDatabase();
+        mGames.add(new Game("Game's Name", true,false));
         gamesAdapter.notifyDataSetChanged();
         Intent newGameIntent = new Intent(this, PlayGameActivity.class);
         newGameIntent.putExtra(NEW_GAME_INDEX, mGames.size()-1);
         startActivity(newGameIntent);
+    }
+
+    private void openDatabase() {
+
     }
 
     private void removeGame(int position) {
@@ -78,5 +84,10 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public ArrayList<Game> getGames(){
+        ArrayList<Game> games = new ArrayList<>();
+        return games;
     }
 }
