@@ -30,7 +30,9 @@ public class PlayGameActivity extends Activity {
         Intent data = getIntent();
         int gameNumber = data.getIntExtra(MainActivity.NEW_GAME_INDEX, 0);
         mGame = MainActivity.mGames.get(gameNumber);
-        mPlayers.add(new Player("Player 1", 0));
+        if (mPlayers.size()==0) {
+            mPlayers.add(new Player("Player 1", 0));
+        }
 
         mRecyclerView = findViewById(R.id.listOfPlayers);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -41,11 +43,12 @@ public class PlayGameActivity extends Activity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPlayers.add(new Player("Player 2", 0));
+                mPlayers.add(new Player("Player " + (mPlayers.size() + 1), 0));
                 mPlayAdapter.notifyDataSetChanged();
             }
         });
 
     }
+
 
 }

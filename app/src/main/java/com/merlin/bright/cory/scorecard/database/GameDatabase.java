@@ -18,7 +18,7 @@ public abstract class GameDatabase extends RoomDatabase {
 
     private static GameDatabase INSTANCE;
 
-    static GameDatabase getDatabase(final Context context){
+    public static GameDatabase getDatabase(final Context context){
         if(INSTANCE == null){
             synchronized (GameDatabase.class){
                 if(INSTANCE == null){

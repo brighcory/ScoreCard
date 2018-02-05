@@ -15,7 +15,8 @@ public class Game {
     private int id;
 
     private String mGameName;
-    private Player mWinner;
+
+    private String mWinner;
     private boolean mWinnerHighest = true;
     private boolean mTeam = false;
     @Ignore
@@ -29,12 +30,48 @@ public class Game {
         mPlayers.add(player);
     }
 
+    public String getWinner() {
+        Player winner = mPlayers.get(0);
+        mWinner = mPlayers.get(0).getPlayerName();
+        if (mWinnerHighest) {
+            for (Player player : mPlayers) {
+                winner = (winner.getScore() > player.getScore()) ? winner : player;
+            }
+        } else {
+            for (Player player : mPlayers) {
+                winner = (winner.getScore() < player.getScore()) ? winner : player;
+            }
+        }
+        mWinner = winner.getPlayerName();
+        return mWinner;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getGameName() {
         return mGameName;
     }
 
     public void setGameName(String gameName) {
         mGameName = gameName;
+    }
+
+    public void setWinner(String winner) {
+        mWinner = winner;
+    }
+
+    public boolean isWinnerHighest() {
+        return mWinnerHighest;
+    }
+
+    public void setWinnerHighest(boolean winnerHighest) {
+        mWinnerHighest = winnerHighest;
     }
 
     public boolean isTeam() {
@@ -45,29 +82,11 @@ public class Game {
         mTeam = team;
     }
 
-    public Player getWinner() {
-        mWinner = mPlayers.get(0);
-        if (mWinnerHighest) {
-            for (Player player : mPlayers) {
-                mWinner = (mWinner.getScore() > player.getScore()) ? mWinner : player;
-            }
-        } else {
-            for (Player player : mPlayers) {
-                mWinner = (mWinner.getScore() < player.getScore()) ? mWinner : player;
-            }
-        }
-        return mWinner;
-    }
-
-    public void setWinner(Player winner) {
-        mWinner = winner;
-    }
-
-    public void setWinnerHighest(boolean winnerHighest) {
-        mWinnerHighest = winnerHighest;
-    }
-
     public ArrayList<Player> getPlayers() {
         return mPlayers;
+    }
+
+    public void setPlayers(ArrayList<Player> players) {
+        mPlayers = players;
     }
 }

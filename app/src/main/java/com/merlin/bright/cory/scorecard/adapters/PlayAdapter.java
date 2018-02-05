@@ -71,12 +71,15 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 try {
-                    int scoreDelta = Integer.parseInt(String.valueOf(holder.scoreAddText.getText()));
-                    int scoreUpdate = mPlayers.get(holder.getAdapterPosition()).getScore() + scoreDelta;
+                    int scoreDelta = Integer.parseInt(
+                            String.valueOf(holder.scoreAddText.getText()));
+                    int scoreUpdate = mPlayers.get(holder.getAdapterPosition())
+                            .getScore() + scoreDelta;
                     mPlayers.get(holder.getAdapterPosition()).setScore(scoreUpdate);
                     holder.playerScore.setText(String.format("%d", scoreUpdate));
                 } catch (NumberFormatException e) {
-                    Toast.makeText(mContext, "Need a number", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Need a number", Toast.LENGTH_SHORT)
+                            .show();
                 }
             }
         });
@@ -84,12 +87,15 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 try {
-                    int scoreDelta = Integer.parseInt(String.valueOf(holder.scoreAddText.getText()));
-                    int scoreUpdate = mPlayers.get(holder.getAdapterPosition()).getScore() - scoreDelta;
+                    int scoreDelta = Integer.parseInt(String.valueOf(
+                            holder.scoreAddText.getText()));
+                    int scoreUpdate = mPlayers.get(holder.getAdapterPosition())
+                            .getScore() - scoreDelta;
                     mPlayers.get(holder.getAdapterPosition()).setScore(scoreUpdate);
                     holder.playerScore.setText(String.format("%d", scoreUpdate));
                 } catch (NumberFormatException e){
-                    Toast.makeText(mContext, "Need a number", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Need a number", Toast.LENGTH_SHORT)
+                            .show();
                 }
             }
         });

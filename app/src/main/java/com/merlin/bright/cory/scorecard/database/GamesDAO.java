@@ -1,5 +1,6 @@
 package com.merlin.bright.cory.scorecard.database;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -8,6 +9,7 @@ import android.arch.persistence.room.Update;
 
 import com.merlin.bright.cory.scorecard.gameObjects.Game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +18,7 @@ import java.util.List;
 @Dao
 public interface GamesDAO {
     @Query("SELECT * FROM game")
-    List<Game> getAllGames();
+    LiveData<List<Game>> getAllGames();
 
     @Insert
     void insert(Game... games);
@@ -26,4 +28,7 @@ public interface GamesDAO {
 
     @Delete
     void delete(Game... games);
+
+    @Insert
+    void insert(ArrayList<Game> mGames);
 }
