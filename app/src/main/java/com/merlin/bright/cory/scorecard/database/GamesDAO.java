@@ -20,6 +20,8 @@ public interface GamesDAO {
     @Query("SELECT * FROM game")
     LiveData<List<Game>> getAllGames();
 
+    @Query("SELECT * FROM game WHERE id = :id")
+    Game getGame(int id);
     @Insert
     void insert(Game... games);
 

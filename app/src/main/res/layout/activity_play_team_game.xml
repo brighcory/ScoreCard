@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.merlin.bright.cory.scorecard.ui.PlayTeamGameActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:gravity="end"
-        android:orientation="horizontal">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:id="@+id/team_a_linear_layout"
+        android:layout_alignParentLeft="true">
 
         <TextView
             android:id="@+id/teamANameTextView"
@@ -53,13 +55,19 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/teamAPlayerList"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="159dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/team_b_linear_layout"
+        android:layout_below="@+id/team_a_linear_layout" />
 
     <LinearLayout
+        android:id="@+id/team_b_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:background="@color/colorPrimary"
-        android:gravity="end"
+        android:gravity="center_horizontal"
         android:orientation="horizontal">
 
         <TextView
@@ -101,6 +109,34 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/teamBPlayerList"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/team_b_linear_layout"
+        android:layout_above="@+id/save_team_game_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/save_team_game_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/colorPrimaryDark"
+        android:padding="15dp"
+        android:text="@string/save_game"
+        android:textColor="@android:color/background_light" />
+
+    <Button
+        android:id="@+id/delete_team_game_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/save_team_game_button"
+        android:layout_toRightOf="@+id/save_team_game_button"
+        android:background="@color/colorPrimaryDark"
+        android:padding="15dp"
+        android:text="@string/delete_game"
+        android:textColor="@android:color/background_light" />
+
+</RelativeLayout>

@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 
 import com.merlin.bright.cory.scorecard.R;
 import com.merlin.bright.cory.scorecard.adapters.PlayAdapter;
@@ -17,20 +18,26 @@ import java.util.ArrayList;
 
 public class PlayGameActivity extends Activity {
 
-    private Game mGame;
+    private Game playingGame;
     private ArrayList<Player> mPlayers = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private PlayAdapter mPlayAdapter;
+    private Button saveGame;
+    private Button deleteGame;
+    int gameNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_game);
 
+        saveGame = findViewById(R.id.save_game_button);
+        deleteGame = findViewById(R.id.delete_game_button);
+
         Intent data = getIntent();
-        int gameNumber = data.getIntExtra(MainActivity.NEW_GAME_INDEX, 0);
-        mGame = MainActivity.mGames.get(gameNumber);
-        if (mPlayers.size()==0) {
+        gameNumber = data.getIntExtra(MainActivity.NEW_GAME_INDEX, 0);
+        playingGame = MainActivity.mGames.get(gameNumber);
+        if (mPlayers.size() == 0) {
             mPlayers.add(new Player("Player 1", 0));
         }
 
@@ -48,6 +55,32 @@ public class PlayGameActivity extends Activity {
             }
         });
 
+        saveGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveTheGame();
+            }
+        });
+        deleteGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteTheGame();
+            }
+        });
+
+    }
+
+    private void saveTheGame() {
+        Intent replyIntent = getIntent();
+//        replyIntent.putExtra();
+        setResult(RESULT_OK, replyIntent);
+        finish();
+    }
+
+    private void deleteTheGame() {
+        MainActivity.removeGame(gameNumber);
+        setResult(RESULT_CANCELED);
+        finish();
     }
 
 

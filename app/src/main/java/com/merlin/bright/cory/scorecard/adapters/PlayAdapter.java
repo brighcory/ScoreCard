@@ -70,35 +70,28 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
         holder.plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    int scoreDelta = Integer.parseInt(
-                            String.valueOf(holder.scoreAddText.getText()));
-                    int scoreUpdate = mPlayers.get(holder.getAdapterPosition())
-                            .getScore() + scoreDelta;
-                    mPlayers.get(holder.getAdapterPosition()).setScore(scoreUpdate);
-                    holder.playerScore.setText(String.format("%d", scoreUpdate));
-                } catch (NumberFormatException e) {
-                    Toast.makeText(mContext, "Need a number", Toast.LENGTH_SHORT)
-                            .show();
-                }
+                addScore(holder, String.valueOf(holder.scoreAddText.getText()));
             }
         });
         holder.minusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    int scoreDelta = Integer.parseInt(String.valueOf(
-                            holder.scoreAddText.getText()));
-                    int scoreUpdate = mPlayers.get(holder.getAdapterPosition())
-                            .getScore() - scoreDelta;
-                    mPlayers.get(holder.getAdapterPosition()).setScore(scoreUpdate);
-                    holder.playerScore.setText(String.format("%d", scoreUpdate));
-                } catch (NumberFormatException e){
-                    Toast.makeText(mContext, "Need a number", Toast.LENGTH_SHORT)
-                            .show();
-                }
+                addScore(holder, String.valueOf("-" + holder.scoreAddText.getText()));
             }
         });
+    }
+
+    private void addScore(ViewHolder holder, String s) {
+        try {
+            int scoreDelta = Integer.parseInt(s);
+            int scoreUpdate = mPlayers.get(holder.getAdapterPosition())
+                    .getScore() + scoreDelta;
+            mPlayers.get(holder.getAdapterPosition()).setScore(scoreUpdate);
+            holder.playerScore.setText(String.format("%d", scoreUpdate));
+        } catch (NumberFormatException e) {
+            Toast.makeText(mContext, "Need a number", Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
 
 

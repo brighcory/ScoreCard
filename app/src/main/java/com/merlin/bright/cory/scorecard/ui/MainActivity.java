@@ -3,7 +3,6 @@ package com.merlin.bright.cory.scorecard.ui;
 import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.arch.persistence.room.Room;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import android.view.View;
 
 import com.merlin.bright.cory.scorecard.R;
 import com.merlin.bright.cory.scorecard.adapters.GamesAdapter;
-import com.merlin.bright.cory.scorecard.database.GameDatabase;
 import com.merlin.bright.cory.scorecard.database.repository.GameViewModel;
 import com.merlin.bright.cory.scorecard.gameObjects.Game;
 
@@ -27,21 +25,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int NEW_GAME_ACTIVITY_REQUEST_CODE = 1;
     public static ArrayList<Game> mGames = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private GamesAdapter gamesAdapter;
     public static final String NEW_GAME_INDEX = "New_Game_Index";
-    GameViewModel mGameViewModel;
+    public static GameViewModel mGameViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-
-        if (mGames.size() == 0) {
-            mGames.add(new Game("Game", true, false));
-        }
 
         mRecyclerView = findViewById(R.id.gameList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -52,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         mGameViewModel.getGames().observe(this, new Observer<List<Game>>() {
             @Override
             public void onChanged(@Nullable List<Game> games) {
+                gamesAdapter.setGames(games);
             }
         });
 
@@ -69,21 +65,23 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Team", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                mGames.add(new Game("Game's Name", true, true));
-                gamesAdapter.notifyDataSetChanged();
-                Intent newGameIntent = new Intent(MainActivity.this, PlayTeamGameActivity.class);
-                newGameIntent.putExtra(NEW_GAME_INDEX, mGames.size() - 1);
-                startActivity(newGameIntent);
+                mGameViewModel.insert(new Game("Game's Name",
+                        true, true));
+                Intent newGameIntent =
+                        new Intent(MainActivity.this,
+                                PlayTeamGameActivity.class);
+                newGameIntent.putExtra(NEW_GAME_INDEX, mGames.size()-1);
+                startActivityForResult(newGameIntent, NEW_GAME_ACTIVITY_REQUEST_CODE);
             }
         });
         builder.setNegativeButton("Individual", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                mGames.add(new Game("Game's Name no Team", true, false));
-                gamesAdapter.notifyDataSetChanged();
-                Intent newGameIntent = new Intent(MainActivity.this, PlayGameActivity.class);
-                newGameIntent.putExtra(NEW_GAME_INDEX, mGames.size() - 1);
-                startActivity(newGameIntent);
+                mGameViewModel.insert(new Game("Game's Name no Team",
+                        true, false));
+                Intent newGameIntent = new Intent(MainActivity.this,
+                        PlayGameActivity.class);
+                startActivityForResult(newGameIntent, NEW_GAME_ACTIVITY_REQUEST_CODE);
             }
         });
         builder.setTitle("Does the Game have Teams");
@@ -92,8 +90,9 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void removeGame(int position) {
-        mGames.remove(position);
+
+    public static void removeGame(int position) {
+        mGameViewModel.deleteGame(mGames.get(position));
     }
 
     @Override
@@ -116,24 +115,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public ArrayList<Game> getGames() {
-        ArrayList<Game> games = new ArrayList<>();
-        return games;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                GameDatabase database =
-                        Room.databaseBuilder(MainActivity.this.getApplicationContext(),
-                                GameDatabase.class, "Game").build();
-                database.daoGames().insert(mGames);
-            }
-        });
     }
 }

@@ -33,7 +33,11 @@ public class GameRepository {
     LiveData<List<Game>> getGames(){return mGames;}
 
     void insert(final Game game){
-        new insertAT(mGamesDAO);
+        new insertAT(mGamesDAO).execute(game);
+    }
+
+    public void delete(Game game) {
+        new deleteAT(mGamesDAO).execute(game);
     }
 
     private class insertAT extends AsyncTask<Game, Void, Void>{
@@ -45,6 +49,18 @@ public class GameRepository {
         @Override
         protected Void doInBackground(Game... games) {
             mGamesDAO.insert(games);
+            return null;
+        }
+    }
+    private class deleteAT extends AsyncTask<Game, Void, Void>{
+        GamesDAO mGamesDAO;
+        public deleteAT(GamesDAO dao) {
+            mGamesDAO = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Game... games) {
+            mGamesDAO.delete(games);
             return null;
         }
     }

@@ -31,8 +31,11 @@ public class Game {
     }
 
     public String getWinner() {
+        return getWinningPlayer().getPlayerName();
+    }
+
+    private Player getWinningPlayer() {
         Player winner = mPlayers.get(0);
-        mWinner = mPlayers.get(0).getPlayerName();
         if (mWinnerHighest) {
             for (Player player : mPlayers) {
                 winner = (winner.getScore() > player.getScore()) ? winner : player;
@@ -42,8 +45,7 @@ public class Game {
                 winner = (winner.getScore() < player.getScore()) ? winner : player;
             }
         }
-        mWinner = winner.getPlayerName();
-        return mWinner;
+        return winner;
     }
 
     public int getId() {
@@ -88,5 +90,9 @@ public class Game {
 
     public void setPlayers(ArrayList<Player> players) {
         mPlayers = players;
+    }
+
+    public int getWinningScore() {
+        return getWinningPlayer().getScore();
     }
 }
