@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.merlin.bright.cory.scorecard.gameObjects.Game;
+import com.merlin.bright.cory.scorecard.gameObjects.Player;
 
 import java.util.List;
 
@@ -30,5 +31,13 @@ public class GameViewModel extends AndroidViewModel {
 
     public void deleteGame(Game game) {
         mRepository.delete(game);
+    }
+
+    public void updateGame(Game game) {
+        mRepository.update(game);
+    }
+
+    public LiveData<List<Player>> getGamePlayers(int id) {
+        return mRepository.getGamePlayers(id);
     }
 }

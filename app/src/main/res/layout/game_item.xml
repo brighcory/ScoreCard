@@ -8,14 +8,14 @@
         android:id="@+id/gameNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/game_button"
+        android:layout_toRightOf="@+id/game_button"
         android:padding="5dp"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="36sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         tools:text="Times Up" />
 
@@ -53,10 +53,21 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:minWidth="100dp"
         android:padding="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:textAlignment="center"
-        android:textSize="36sp"
+        android:textSize="30sp"
         tools:text="4500" />
+
+    <Button
+        android:id="@+id/game_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:background="@android:drawable/ic_media_play" />
 </RelativeLayout>

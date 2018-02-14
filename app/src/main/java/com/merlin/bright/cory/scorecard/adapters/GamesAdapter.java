@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.merlin.bright.cory.scorecard.R;
@@ -42,9 +44,32 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(final GamesAdapter.ViewHolder holder, int position) {
         holder.mGameName.setText(mGames.get(position).getGameName());
+        holder.mGameName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                final EditText input = new EditText(mContext);
+                builder.setView(input);
+
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String name = String.valueOf(input.getText());
+                        mGames.get(holder.getAdapterPosition()).setGameName(name);
+                        holder.mGameName.setText(name);
+                        MainActivity.mGameViewModel.updateGame(mGames.get(holder.getAdapterPosition()));
+                    }
+                });
+
+                builder.setTitle("Enter Name of Game");
+                AlertDialog dialog = builder.create();
+
+                dialog.show();
+            }
+        });
         holder.mWinnerName.setText(mGames.get(position).getWinner());
         holder.mScoreOfWinner.setText(mGames.get(position).getWinningScore() + "");
-        holder.mGameName.setOnClickListener(new View.OnClickListener() {
+        holder.mPlayGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent;
@@ -57,24 +82,35 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
                 mContext.startActivity(intent);
             }
         });
-        holder.mGameName.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.mPlayGameButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                AlertDialog alertDialog = new AlertDialog.Builder(mContext)
-                        .create();
-                alertDialog.setTitle("Deleting game");
-                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Delete Game",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                MainActivity.mGameViewModel.deleteGame(
-                                        mGames.get(holder.getAdapterPosition()));
-                            }
-                        });
-                alertDialog.show();
+                deleteGame(holder);
                 return true;
             }
         });
+        holder.mGameName.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                deleteGame(holder);
+                return true;
+            }
+        });
+    }
+
+    private void deleteGame(final ViewHolder holder) {
+        AlertDialog alertDialog = new AlertDialog.Builder(mContext)
+                .create();
+        alertDialog.setTitle("Deleting game");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Delete Game",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        MainActivity.mGameViewModel.deleteGame(
+                                mGames.get(holder.getAdapterPosition()));
+                    }
+                });
+        alertDialog.show();
     }
 
     @Override
@@ -92,12 +128,14 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         TextView mGameName;
         TextView mWinnerName;
         TextView mScoreOfWinner;
+        Button mPlayGameButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mGameName = itemView.findViewById(R.id.gameNameTextView);
             mWinnerName = itemView.findViewById(R.id.winnerTextView);
             mScoreOfWinner = itemView.findViewById(R.id.scoreTextView);
+            mPlayGameButton = itemView.findViewById(R.id.game_button);
         }
     }
 }

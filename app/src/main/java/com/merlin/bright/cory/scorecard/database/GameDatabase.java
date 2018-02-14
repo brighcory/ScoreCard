@@ -28,7 +28,8 @@ public abstract class GameDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             GameDatabase.class, "Games")
-                            .addCallback(sData).build();
+                            .addCallback(sData)
+                            .build();
                 }
             }
         }
@@ -54,10 +55,7 @@ public abstract class GameDatabase extends RoomDatabase {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            if (mGamesDAO.getAllGames().getValue() == null) {
-                mGamesDAO.insert(
-                        new Game("Game", true, false));
-            }
+
             return null;
         }
     }

@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     private void addGame() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setPositiveButton("Team", new DialogInterface.OnClickListener() {

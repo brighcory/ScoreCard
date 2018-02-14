@@ -27,10 +27,11 @@ public class GameRepository {
         mGamesDAO = database.daoGames();
         mPlayersDAO = database.daoPlayers();
         mGames = mGamesDAO.getAllGames();
-        mPlayers = mPlayersDAO.getAllPlayers();
     }
 
     LiveData<List<Game>> getGames(){return mGames;}
+
+    LiveData<List<Player>> getGamePlayers(int id){return mGamesDAO.getGamePlayers(id);}
 
     void insert(final Game game){
         new insertAT(mGamesDAO).execute(game);
@@ -40,7 +41,11 @@ public class GameRepository {
         new deleteAT(mGamesDAO).execute(game);
     }
 
-    private class insertAT extends AsyncTask<Game, Void, Void>{
+    public void update(Game game) {
+        new updateAT(mGamesDAO).execute(game);
+    }
+
+    private static class insertAT extends AsyncTask<Game, Void, Void>{
         GamesDAO mGamesDAO;
         public insertAT(GamesDAO dao) {
             mGamesDAO = dao;
@@ -52,7 +57,7 @@ public class GameRepository {
             return null;
         }
     }
-    private class deleteAT extends AsyncTask<Game, Void, Void>{
+    private static class deleteAT extends AsyncTask<Game, Void, Void>{
         GamesDAO mGamesDAO;
         public deleteAT(GamesDAO dao) {
             mGamesDAO = dao;
@@ -61,6 +66,18 @@ public class GameRepository {
         @Override
         protected Void doInBackground(Game... games) {
             mGamesDAO.delete(games);
+            return null;
+        }
+    }
+    private static class updateAT extends AsyncTask<Game, Void, Void>{
+        GamesDAO mGamesDAO;
+        public updateAT(GamesDAO dao) {
+            mGamesDAO = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Game... games) {
+            mGamesDAO.update(games);
             return null;
         }
     }

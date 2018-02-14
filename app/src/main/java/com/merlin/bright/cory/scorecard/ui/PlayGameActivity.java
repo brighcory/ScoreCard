@@ -37,20 +37,23 @@ public class PlayGameActivity extends Activity {
         Intent data = getIntent();
         gameNumber = data.getIntExtra(MainActivity.NEW_GAME_INDEX, 0);
         playingGame = MainActivity.mGames.get(gameNumber);
+        mPlayers = playingGame.getPlayers();
         if (mPlayers.size() == 0) {
             mPlayers.add(new Player("Player 1", 0));
         }
 
         mRecyclerView = findViewById(R.id.listOfPlayers);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mPlayAdapter = new PlayAdapter(this, mPlayers);
+        mPlayAdapter = new PlayAdapter(this, mPlayers, playingGame);
         mRecyclerView.setAdapter(mPlayAdapter);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPlayers.add(new Player("Player " + (mPlayers.size() + 1), 0));
+
+                mPlayers.add(
+                        new Player("Player " + (mPlayers.size() + 1), 0));
                 mPlayAdapter.notifyDataSetChanged();
             }
         });

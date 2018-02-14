@@ -4,6 +4,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.merlin.bright.cory.scorecard.ui.MainActivity;
+
 import java.util.ArrayList;
 
 /**
@@ -15,7 +17,6 @@ public class Game {
     private int id;
 
     private String mGameName;
-
     private String mWinner;
     private boolean mWinnerHighest = true;
     private boolean mTeam = false;
@@ -85,6 +86,7 @@ public class Game {
     }
 
     public ArrayList<Player> getPlayers() {
+        MainActivity.mGameViewModel.getGamePlayers(id);
         return mPlayers;
     }
 

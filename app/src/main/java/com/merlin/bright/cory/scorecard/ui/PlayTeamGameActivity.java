@@ -46,6 +46,8 @@ public class PlayTeamGameActivity extends AppCompatActivity {
         gameNumber = data.getIntExtra(MainActivity.NEW_GAME_INDEX, 0);
         playingGame = MainActivity.mGames.get(gameNumber);
 
+
+
         aTeamNameView = findViewById(R.id.teamANameTextView);
         bTeamNameView = findViewById(R.id.teamBNameTextView);
 
@@ -70,8 +72,8 @@ public class PlayTeamGameActivity extends AppCompatActivity {
         aTeamList.setLayoutManager(new LinearLayoutManager(this));
         bTeamList.setLayoutManager(new LinearLayoutManager(this));
 
-        aTeamPlayAdapter = new PlayAdapter(this, aTeam);
-        bTeamPlayAdapter = new PlayAdapter(this, bTeam);
+        aTeamPlayAdapter = new PlayAdapter(this, aTeam, playingGame);
+        bTeamPlayAdapter = new PlayAdapter(this, bTeam, playingGame);
 
         aTeamList.setAdapter(aTeamPlayAdapter);
         bTeamList.setAdapter(bTeamPlayAdapter);
@@ -91,6 +93,7 @@ public class PlayTeamGameActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String name = String.valueOf(input.getText());
+                        for (Player player : aTeam) player.setTeamName(name);
                         aTeamNameView.setText(name);
                     }
                 });
@@ -111,6 +114,7 @@ public class PlayTeamGameActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String name = String.valueOf(input.getText());
+                        for (Player player : bTeam) player.setTeamName(name);
                         bTeamNameView.setText(name);
                     }
                 });
@@ -123,6 +127,8 @@ public class PlayTeamGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 aTeam.add(new Player("Player", 0));
+                aTeam.get(aTeam.size() - 1).setPlayerName(
+                        aTeamNameView.getText().toString());
                 aTeamPlayAdapter.notifyDataSetChanged();
             }
         });
@@ -131,6 +137,8 @@ public class PlayTeamGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 bTeam.add(new Player("Player", 0));
+                bTeam.get(bTeam.size() - 1).setPlayerName(
+                        bTeamNameView.getText().toString());
                 bTeamPlayAdapter.notifyDataSetChanged();
             }
         });
