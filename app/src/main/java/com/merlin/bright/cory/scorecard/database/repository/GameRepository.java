@@ -10,13 +10,14 @@ import com.merlin.bright.cory.scorecard.database.PlayersDAO;
 import com.merlin.bright.cory.scorecard.gameObjects.Game;
 import com.merlin.bright.cory.scorecard.gameObjects.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by coryb on 2/2/2018.
  */
 
-public class GameRepository {
+class GameRepository {
     private GamesDAO mGamesDAO;
     private PlayersDAO mPlayersDAO;
     private LiveData<List<Game>> mGames;
@@ -27,27 +28,41 @@ public class GameRepository {
         mGamesDAO = database.daoGames();
         mPlayersDAO = database.daoPlayers();
         mGames = mGamesDAO.getAllGames();
+        mPlayers = mPlayersDAO.getAllPlayers();
     }
 
     LiveData<List<Game>> getGames(){return mGames;}
-
-    LiveData<List<Player>> getGamePlayers(int id){return mGamesDAO.getGamePlayers(id);}
+    LiveData<List<Player>> getPlayers(){return mPlayers;}
 
     void insert(final Game game){
         new insertAT(mGamesDAO).execute(game);
     }
 
-    public void delete(Game game) {
+    void delete(Game game) {
         new deleteAT(mGamesDAO).execute(game);
     }
 
-    public void update(Game game) {
+    void update(Game game) {
         new updateAT(mGamesDAO).execute(game);
+    }
+
+    void insert(Player player) {
+        new insertPlayerAT(mPlayersDAO).execute(player);
+    }
+
+    void insert(ArrayList<Player> players) {
+        for (Player player : players) {
+            new insertPlayerAT(mPlayersDAO).execute(player);
+        }
+    }
+
+    void update(Player player) {
+        new updatePlayerAT(mPlayersDAO).execute(player);
     }
 
     private static class insertAT extends AsyncTask<Game, Void, Void>{
         GamesDAO mGamesDAO;
-        public insertAT(GamesDAO dao) {
+        insertAT(GamesDAO dao) {
             mGamesDAO = dao;
         }
 
@@ -57,9 +72,21 @@ public class GameRepository {
             return null;
         }
     }
+    private static class insertPlayerAT extends AsyncTask<Player, Void, Void>{
+        PlayersDAO mDAO;
+        insertPlayerAT(PlayersDAO dao) {
+            mDAO = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Player... players) {
+            mDAO.insert(players);
+            return null;
+        }
+    }
     private static class deleteAT extends AsyncTask<Game, Void, Void>{
         GamesDAO mGamesDAO;
-        public deleteAT(GamesDAO dao) {
+        deleteAT(GamesDAO dao) {
             mGamesDAO = dao;
         }
 
@@ -71,13 +98,25 @@ public class GameRepository {
     }
     private static class updateAT extends AsyncTask<Game, Void, Void>{
         GamesDAO mGamesDAO;
-        public updateAT(GamesDAO dao) {
+        updateAT(GamesDAO dao) {
             mGamesDAO = dao;
         }
 
         @Override
         protected Void doInBackground(Game... games) {
             mGamesDAO.update(games);
+            return null;
+        }
+    }
+    private static class updatePlayerAT extends AsyncTask<Player, Void, Void>{
+        PlayersDAO mGamesDAO;
+        updatePlayerAT(PlayersDAO dao) {
+            mGamesDAO = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Player... players) {
+            mGamesDAO.update(players);
             return null;
         }
     }

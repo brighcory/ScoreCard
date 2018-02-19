@@ -47,7 +47,6 @@ public class PlayTeamGameActivity extends AppCompatActivity {
         playingGame = MainActivity.mGames.get(gameNumber);
 
 
-
         aTeamNameView = findViewById(R.id.teamANameTextView);
         bTeamNameView = findViewById(R.id.teamBNameTextView);
 
@@ -60,11 +59,8 @@ public class PlayTeamGameActivity extends AppCompatActivity {
         saveGameButton = findViewById(R.id.save_team_game_button);
         deleteGameButton = findViewById(R.id.delete_team_game_button);
 
-        if (aTeam.size() == 0) {
-            aTeam.add(new Player("Player Team A", 0));
-        }
-        if (bTeam.size() == 0)
-            bTeam.add(new Player("Player Team B", 0));
+
+        //todo add players to both teams
 
         aTeamList = findViewById(R.id.teamAPlayerList);
         bTeamList = findViewById(R.id.teamBPlayerList);
@@ -72,8 +68,8 @@ public class PlayTeamGameActivity extends AppCompatActivity {
         aTeamList.setLayoutManager(new LinearLayoutManager(this));
         bTeamList.setLayoutManager(new LinearLayoutManager(this));
 
-        aTeamPlayAdapter = new PlayAdapter(this, aTeam, playingGame);
-        bTeamPlayAdapter = new PlayAdapter(this, bTeam, playingGame);
+        aTeamPlayAdapter = new PlayAdapter(this, playingGame);
+        bTeamPlayAdapter = new PlayAdapter(this, playingGame);
 
         aTeamList.setAdapter(aTeamPlayAdapter);
         bTeamList.setAdapter(bTeamPlayAdapter);
@@ -126,20 +122,14 @@ public class PlayTeamGameActivity extends AppCompatActivity {
         aTeamAddPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                aTeam.add(new Player("Player", 0));
-                aTeam.get(aTeam.size() - 1).setPlayerName(
-                        aTeamNameView.getText().toString());
-                aTeamPlayAdapter.notifyDataSetChanged();
+                //todo add player to team a
             }
         });
 
         bTeamAddPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bTeam.add(new Player("Player", 0));
-                bTeam.get(bTeam.size() - 1).setPlayerName(
-                        bTeamNameView.getText().toString());
-                bTeamPlayAdapter.notifyDataSetChanged();
+                //todo add player to team b
             }
         });
         aTeamScore.setText(getTeamScore(aTeam));

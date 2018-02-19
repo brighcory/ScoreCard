@@ -29,6 +29,7 @@ public abstract class GameDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             GameDatabase.class, "Games")
                             .addCallback(sData)
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

@@ -7,13 +7,14 @@ import android.arch.persistence.room.PrimaryKey;
 import com.merlin.bright.cory.scorecard.ui.MainActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by cory on 12/6/17.
  */
 @Entity
 public class Game {
-    @PrimaryKey (autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
     private int id;
 
     private String mGameName;
@@ -27,7 +28,25 @@ public class Game {
         mGameName = gameName;
         mWinnerHighest = winnerHighest;
         mTeam = team;
-        Player player = new Player("New Player", 0);
+        mPlayers = getPlayersFromDatabase();
+    }
+
+    public ArrayList<Player> getPlayersFromDatabase() {
+        List<Player> gamePlayers = MainActivity.mGameViewModel.getPlayers().getValue();
+        try {
+            for (Player player : gamePlayers) {
+                if (player.getGameId() == id) {
+                    mPlayers.add(player);
+                }
+            }
+        } catch (NullPointerException e) {
+            addPlayerToGame();
+        }
+        return mPlayers;
+    }
+
+    private void addPlayerToGame() {
+        Player player = new Player("Player", 0, getId());
         mPlayers.add(player);
     }
 
@@ -86,7 +105,6 @@ public class Game {
     }
 
     public ArrayList<Player> getPlayers() {
-        MainActivity.mGameViewModel.getGamePlayers(id);
         return mPlayers;
     }
 

@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import com.merlin.bright.cory.scorecard.gameObjects.Game;
 import com.merlin.bright.cory.scorecard.gameObjects.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,13 +18,16 @@ import java.util.List;
 public class GameViewModel extends AndroidViewModel {
     private GameRepository mRepository;
     private LiveData<List<Game>> mGames;
+    private LiveData<List<Player>> mPlayers;
     public GameViewModel(@NonNull Application application) {
         super(application);
         mRepository = new GameRepository(application);
         mGames = mRepository.getGames();
+        mPlayers = mRepository.getPlayers();
     }
 
     public LiveData<List<Game>> getGames(){return mGames;}
+    public LiveData<List<Player>> getPlayers(){return mPlayers;}
 
     public void insert(Game game){
         mRepository.insert(game);
@@ -37,7 +41,15 @@ public class GameViewModel extends AndroidViewModel {
         mRepository.update(game);
     }
 
-    public LiveData<List<Player>> getGamePlayers(int id) {
-        return mRepository.getGamePlayers(id);
+    public void insert(Player player) {
+        mRepository.insert(player);
+    }
+
+    public void insert(ArrayList<Player> players) {
+        mRepository.insert(players);
+    }
+
+    public void updatePlayer(Player player) {
+        mRepository.update(player);
     }
 }

@@ -27,10 +27,10 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
     private ArrayList<Player> mPlayers = new ArrayList<>();
     private Game mGame;
 
-    public PlayAdapter(Context context, ArrayList<Player> player, Game playingGame) {
+    public PlayAdapter(Context context, Game playingGame) {
         mContext = context;
-        mPlayers = player;
         mGame = playingGame;
+        mGame.getPlayersFromDatabase();
     }
 
     @Override
@@ -87,7 +87,7 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
             int scoreUpdate = mPlayers.get(holder.getAdapterPosition())
                     .getScore() + scoreDelta;
             mPlayers.get(holder.getAdapterPosition()).setScore(scoreUpdate);
-            holder.playerScore.setText(String.format("%d", scoreUpdate));
+            holder.playerScore.setText(String.valueOf(scoreUpdate));
         } catch (NumberFormatException e) {
             Toast.makeText(mContext, "Need a number", Toast.LENGTH_SHORT)
                     .show();

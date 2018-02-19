@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
@@ -19,13 +20,16 @@ public interface PlayersDAO {
     @Query("SELECT * FROM player")
     LiveData<List<Player>> getAllPlayers();
 
-    @Insert
-    void insert(Player player);
-
-    @Update
-    void update(Player player);
 
     @Delete
     void delete(Player player);
 
+    @Insert
+    void insert(Player... players);
+
+    @Query("SELECT * FROM player WHERE gameId IS :id")
+    List<Player> getGamePlayers(int id);
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void update(Player... players);
 }

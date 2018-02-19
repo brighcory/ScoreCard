@@ -8,9 +8,7 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.merlin.bright.cory.scorecard.gameObjects.Game;
-import com.merlin.bright.cory.scorecard.gameObjects.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,9 +19,6 @@ public interface GamesDAO {
     @Query("SELECT * FROM game")
     LiveData<List<Game>> getAllGames();
 
-    @Query("SELECT * FROM game WHERE id = :id")
-    Game getGame(int id);
-
     @Insert
     void insert(Game... games);
 
@@ -33,9 +28,4 @@ public interface GamesDAO {
     @Delete
     void delete(Game... games);
 
-    @Insert
-    void insert(ArrayList<Game> mGames);
-
-    @Query("SELECT * FROM player WHERE gameId IS :id")
-    LiveData<List<Player>> getGamePlayers(int id);
 }

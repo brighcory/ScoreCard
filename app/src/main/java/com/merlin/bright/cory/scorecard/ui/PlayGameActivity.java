@@ -14,12 +14,9 @@ import com.merlin.bright.cory.scorecard.adapters.PlayAdapter;
 import com.merlin.bright.cory.scorecard.gameObjects.Game;
 import com.merlin.bright.cory.scorecard.gameObjects.Player;
 
-import java.util.ArrayList;
-
 public class PlayGameActivity extends Activity {
 
     private Game playingGame;
-    private ArrayList<Player> mPlayers = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private PlayAdapter mPlayAdapter;
     private Button saveGame;
@@ -37,24 +34,17 @@ public class PlayGameActivity extends Activity {
         Intent data = getIntent();
         gameNumber = data.getIntExtra(MainActivity.NEW_GAME_INDEX, 0);
         playingGame = MainActivity.mGames.get(gameNumber);
-        mPlayers = playingGame.getPlayers();
-        if (mPlayers.size() == 0) {
-            mPlayers.add(new Player("Player 1", 0));
-        }
 
         mRecyclerView = findViewById(R.id.listOfPlayers);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mPlayAdapter = new PlayAdapter(this, mPlayers, playingGame);
+        mPlayAdapter = new PlayAdapter(this, playingGame);
         mRecyclerView.setAdapter(mPlayAdapter);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                mPlayers.add(
-                        new Player("Player " + (mPlayers.size() + 1), 0));
-                mPlayAdapter.notifyDataSetChanged();
+               //todo add player
             }
         });
 
@@ -77,6 +67,12 @@ public class PlayGameActivity extends Activity {
         Intent replyIntent = getIntent();
 //        replyIntent.putExtra();
         setResult(RESULT_OK, replyIntent);
+        MainActivity.mGameViewModel.updateGame(playingGame);
+        for(Player player : playingGame.getPlayers()){
+            player.setGameId(playingGame.getId());
+            MainActivity.mGameViewModel.updatePlayer(player);
+        }
+        MainActivity.mGameViewModel.insert(playingGame.getPlayers());
         finish();
     }
 
