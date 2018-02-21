@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -23,12 +22,15 @@ import java.util.List;
 
 /**
  * Created by cory on 12/6/17.
+ * Game adapter to view games
  */
 
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> {
     private ArrayList<Game> mGames = new ArrayList<>();
     private Context mContext;
 
+
+    //Constructor
     public GamesAdapter(Context context, ArrayList<Game> games) {
         mGames = games;
         mContext = context;
@@ -57,8 +59,6 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
                         String name = String.valueOf(input.getText());
                         mGames.get(holder.getAdapterPosition()).setGameName(name);
                         holder.mGameName.setText(name);
-                        MainActivity.mGameViewModel
-                                .updateGame(mGames.get(holder.getAdapterPosition()));
                     }
                 });
                 builder.setTitle("Enter Name of Game");
@@ -75,19 +75,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         });
         holder.mWinnerName.setText(mGames.get(position).getWinner());
         holder.mScoreOfWinner.setText(String.valueOf(mGames.get(position).getWinningScore()));
-        holder.mPlayGameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startGame(holder);
-            }
-        });
-        holder.mPlayGameButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                deleteGame(holder);
-                return true;
-            }
-        });
+
         holder.mGameName.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -116,8 +104,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        MainActivity.mGameViewModel.deleteGame(
-                                mGames.get(holder.getAdapterPosition()));
+                        MainActivity.deleteGame(holder.getAdapterPosition());
                     }
                 });
         alertDialog.show();
@@ -134,18 +121,16 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView mGameName;
         TextView mWinnerName;
         TextView mScoreOfWinner;
-        Button mPlayGameButton;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             mGameName = itemView.findViewById(R.id.gameNameTextView);
             mWinnerName = itemView.findViewById(R.id.winnerTextView);
             mScoreOfWinner = itemView.findViewById(R.id.scoreTextView);
-            mPlayGameButton = itemView.findViewById(R.id.game_button);
         }
     }
 }

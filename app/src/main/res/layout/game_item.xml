@@ -61,13 +61,5 @@
         android:textSize="30sp"
         tools:text="4500" />
 
-    <Button
-        android:id="@+id/game_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="5dp"
-        android:background="@android:drawable/ic_media_play" />
+
 </RelativeLayout>

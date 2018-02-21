@@ -32,4 +32,5 @@ public interface PlayersDAO {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void update(Player... players);
+
 }

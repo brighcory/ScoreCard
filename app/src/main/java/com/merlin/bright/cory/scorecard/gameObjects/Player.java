@@ -22,12 +22,11 @@ public class Player {
 
     private int gameId;
     private String mPlayerName;
-    private int mScore;
+    private int mScore = 0;
     private String teamName;
 
-    public Player(String playerName, int score, int gameId) {
+    public Player(String playerName, int gameId) {
         mPlayerName = playerName;
-        mScore = score;
         this.gameId = gameId;
     }
 

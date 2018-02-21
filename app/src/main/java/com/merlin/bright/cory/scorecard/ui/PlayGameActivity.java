@@ -12,10 +12,10 @@ import android.widget.Button;
 import com.merlin.bright.cory.scorecard.R;
 import com.merlin.bright.cory.scorecard.adapters.PlayAdapter;
 import com.merlin.bright.cory.scorecard.gameObjects.Game;
-import com.merlin.bright.cory.scorecard.gameObjects.Player;
 
 public class PlayGameActivity extends Activity {
 
+    public static final String EXTRA_REPLY = PlayGameActivity.class.getSimpleName();
     private Game playingGame;
     private RecyclerView mRecyclerView;
     private PlayAdapter mPlayAdapter;
@@ -28,6 +28,7 @@ public class PlayGameActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_game);
 
+        mRecyclerView = findViewById(R.id.listOfPlayers);
         saveGame = findViewById(R.id.save_game_button);
         deleteGame = findViewById(R.id.delete_game_button);
 
@@ -35,7 +36,6 @@ public class PlayGameActivity extends Activity {
         gameNumber = data.getIntExtra(MainActivity.NEW_GAME_INDEX, 0);
         playingGame = MainActivity.mGames.get(gameNumber);
 
-        mRecyclerView = findViewById(R.id.listOfPlayers);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mPlayAdapter = new PlayAdapter(this, playingGame);
         mRecyclerView.setAdapter(mPlayAdapter);
@@ -44,41 +44,37 @@ public class PlayGameActivity extends Activity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               //todo add player
+                mPlayAdapter.addPlayer();
+                mPlayAdapter.updatePlayers();
             }
         });
 
+        final Intent replyIntent = new Intent();
+        replyIntent.putExtra(EXTRA_REPLY, gameNumber);
         saveGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveTheGame();
+                saveTheGame(replyIntent);
             }
         });
         deleteGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteTheGame();
+                deleteTheGame(replyIntent);
             }
         });
-
     }
 
-    private void saveTheGame() {
-        Intent replyIntent = getIntent();
-//        replyIntent.putExtra();
+    private void saveTheGame(Intent replyIntent) {
+        MainActivity.updateGame(gameNumber);
+        MainActivity.insert(playingGame.getPlayers());
         setResult(RESULT_OK, replyIntent);
-        MainActivity.mGameViewModel.updateGame(playingGame);
-        for(Player player : playingGame.getPlayers()){
-            player.setGameId(playingGame.getId());
-            MainActivity.mGameViewModel.updatePlayer(player);
-        }
-        MainActivity.mGameViewModel.insert(playingGame.getPlayers());
         finish();
     }
 
-    private void deleteTheGame() {
-        MainActivity.removeGame(gameNumber);
-        setResult(RESULT_CANCELED);
+    private void deleteTheGame(Intent replyIntent) {
+        MainActivity.deleteGame(gameNumber);
+        setResult(RESULT_CANCELED, replyIntent);
         finish();
     }
 

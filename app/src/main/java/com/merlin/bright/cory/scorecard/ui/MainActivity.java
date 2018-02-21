@@ -11,7 +11,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,28 +19,30 @@ import com.merlin.bright.cory.scorecard.R;
 import com.merlin.bright.cory.scorecard.adapters.GamesAdapter;
 import com.merlin.bright.cory.scorecard.database.repository.GameViewModel;
 import com.merlin.bright.cory.scorecard.gameObjects.Game;
+import com.merlin.bright.cory.scorecard.gameObjects.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private static final int NEW_GAME_ACTIVITY_REQUEST_CODE = 1;
+    private static final int GAME_REQUEST_CODE = 1;
     public static ArrayList<Game> mGames = new ArrayList<>();
-    private RecyclerView mRecyclerView;
+    public static ArrayList<Player> mPlayers = new ArrayList<>();
     private GamesAdapter gamesAdapter;
     public static final String NEW_GAME_INDEX = "New_Game_Index";
-    public static GameViewModel mGameViewModel;
+    static GameViewModel mGameViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        //Toolbar toolbar = findViewById(R.id.toolbar);
 
-        mRecyclerView = findViewById(R.id.gameList);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView recyclerView = findViewById(R.id.gameList);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         gamesAdapter = new GamesAdapter(this, mGames);
-        mRecyclerView.setAdapter(gamesAdapter);
+        recyclerView.setAdapter(gamesAdapter);
 
         mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
         mGameViewModel.getGames().observe(this, new Observer<List<Game>>() {
@@ -51,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        try {
+            mPlayers.addAll(mGameViewModel.getPlayers().getValue());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void addGame() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -72,17 +78,18 @@ public class MainActivity extends AppCompatActivity {
                         new Intent(MainActivity.this,
                                 PlayTeamGameActivity.class);
                 newGameIntent.putExtra(NEW_GAME_INDEX, mGames.size()-1);
-                startActivityForResult(newGameIntent, NEW_GAME_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(newGameIntent, GAME_REQUEST_CODE);
             }
         });
         builder.setNegativeButton("Individual", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                mGameViewModel.insert(new Game("Game's Name no Team",
+                mGameViewModel.insert(new Game("No Team Game",
                         true, false));
                 Intent newGameIntent = new Intent(MainActivity.this,
                         PlayGameActivity.class);
-                startActivityForResult(newGameIntent, NEW_GAME_ACTIVITY_REQUEST_CODE);
+                newGameIntent.putExtra(NEW_GAME_INDEX, mGames.size()-1);
+                startActivityForResult(newGameIntent, GAME_REQUEST_CODE);
             }
         });
         builder.setTitle("Does the Game have Teams");
@@ -91,9 +98,24 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-    public static void removeGame(int position) {
-        mGameViewModel.deleteGame(mGames.get(position));
+        int gameNumber = data.getIntExtra(PlayGameActivity.EXTRA_REPLY,0);
+        if(requestCode == GAME_REQUEST_CODE && resultCode == RESULT_OK){
+            updateGame(gameNumber);
+        }else{
+            deleteGame(gameNumber);
+        }
+    }
+
+    public static void updateGame(int gameNumber) {
+        mGameViewModel.updateGame(mGames.get(gameNumber));
+    }
+
+    public static void deleteGame(int gameNumber) {
+        mGameViewModel.deleteGame(mGames.get(gameNumber));
     }
 
     @Override
@@ -116,5 +138,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public static void insert(ArrayList<Player> players) {
+        mGameViewModel.insert(players);
     }
 }

@@ -49,7 +49,8 @@ public class GameViewModel extends AndroidViewModel {
         mRepository.insert(players);
     }
 
-    public void updatePlayer(Player player) {
+    public void updatePlayer(ArrayList<Player> player) {
         mRepository.update(player);
     }
+
 }

@@ -152,13 +152,14 @@ public class PlayTeamGameActivity extends AppCompatActivity {
     }
 
     private void saveTheGame() {
+        MainActivity.updateGame(gameNumber);
         Intent replyIntent = getIntent();
         setResult(RESULT_OK, replyIntent);
         finish();
     }
 
     private void deleteTheGame() {
-        MainActivity.removeGame(gameNumber);
+        MainActivity.deleteGame(gameNumber);
         setResult(RESULT_CANCELED);
         finish();
     }

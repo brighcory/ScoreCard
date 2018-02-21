@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 /**
  * Created by cory on 12/13/17.
+ * Player adapter to build list of players for each game and two lists for a team game.
  */
 
 public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
@@ -30,7 +31,7 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
     public PlayAdapter(Context context, Game playingGame) {
         mContext = context;
         mGame = playingGame;
-        mGame.getPlayersFromDatabase();
+        mPlayers = playingGame.getPlayers();
     }
 
     @Override
@@ -100,15 +101,25 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
         return mPlayers.size();
     }
 
+    public void updatePlayers() {
+        mPlayers = mGame.getPlayers();
+        notifyDataSetChanged();
+    }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public void addPlayer() {
+        mPlayers.add(new Player("Player " + (mPlayers.size()+1),
+                mGame.getId()));
+    }
+
+
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView playNameTextView;
         TextView playerScore;
         Button plusButton;
         EditText scoreAddText;
         Button minusButton;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             playNameTextView = itemView.findViewById(R.id.playerNameTextView);
             playerScore = itemView.findViewById(R.id.playerScoreTextView);

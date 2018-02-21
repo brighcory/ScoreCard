@@ -31,10 +31,15 @@ class GameRepository {
         mPlayers = mPlayersDAO.getAllPlayers();
     }
 
-    LiveData<List<Game>> getGames(){return mGames;}
-    LiveData<List<Player>> getPlayers(){return mPlayers;}
+    LiveData<List<Game>> getGames() {
+        return mGames;
+    }
 
-    void insert(final Game game){
+    LiveData<List<Player>> getPlayers() {
+        return mPlayers;
+    }
+
+    void insert(final Game game) {
         new insertAT(mGamesDAO).execute(game);
     }
 
@@ -56,12 +61,14 @@ class GameRepository {
         }
     }
 
-    void update(Player player) {
-        new updatePlayerAT(mPlayersDAO).execute(player);
+    void update(ArrayList<Player> players) {
+        for (Player player : players)
+            new updatePlayerAT(mPlayersDAO).execute(player);
     }
 
-    private static class insertAT extends AsyncTask<Game, Void, Void>{
+    private static class insertAT extends AsyncTask<Game, Void, Void> {
         GamesDAO mGamesDAO;
+
         insertAT(GamesDAO dao) {
             mGamesDAO = dao;
         }
@@ -72,8 +79,10 @@ class GameRepository {
             return null;
         }
     }
-    private static class insertPlayerAT extends AsyncTask<Player, Void, Void>{
+
+    private static class insertPlayerAT extends AsyncTask<Player, Void, Void> {
         PlayersDAO mDAO;
+
         insertPlayerAT(PlayersDAO dao) {
             mDAO = dao;
         }
@@ -84,8 +93,10 @@ class GameRepository {
             return null;
         }
     }
-    private static class deleteAT extends AsyncTask<Game, Void, Void>{
+
+    private static class deleteAT extends AsyncTask<Game, Void, Void> {
         GamesDAO mGamesDAO;
+
         deleteAT(GamesDAO dao) {
             mGamesDAO = dao;
         }
@@ -96,8 +107,10 @@ class GameRepository {
             return null;
         }
     }
-    private static class updateAT extends AsyncTask<Game, Void, Void>{
+
+    private static class updateAT extends AsyncTask<Game, Void, Void> {
         GamesDAO mGamesDAO;
+
         updateAT(GamesDAO dao) {
             mGamesDAO = dao;
         }
@@ -108,8 +121,10 @@ class GameRepository {
             return null;
         }
     }
-    private static class updatePlayerAT extends AsyncTask<Player, Void, Void>{
+
+    private static class updatePlayerAT extends AsyncTask<Player, Void, Void> {
         PlayersDAO mGamesDAO;
+
         updatePlayerAT(PlayersDAO dao) {
             mGamesDAO = dao;
         }
