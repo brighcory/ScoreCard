@@ -141,4 +141,8 @@ public class MainActivity extends AppCompatActivity {
     public static void getPlayers(int id) {
         mGameViewModel.getGamePlayers(id);
     }
+
+    public static void deletePlayer(Player player) {
+        mGameViewModel.deletePlayer(player);
+    }
 }

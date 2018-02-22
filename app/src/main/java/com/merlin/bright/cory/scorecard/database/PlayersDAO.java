@@ -22,7 +22,7 @@ public interface PlayersDAO {
 
 
     @Delete
-    void delete(Player player);
+    void delete(Player... player);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Player... players);

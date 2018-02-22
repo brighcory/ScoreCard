@@ -56,4 +56,8 @@ public class GameViewModel extends AndroidViewModel {
     public void getGamePlayers(int id) {
         mRepository.getGamePlayers(id);
     }
+
+    public void deletePlayer(Player player) {
+        mRepository.deletePlayer(player);
+    }
 }

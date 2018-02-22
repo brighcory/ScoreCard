@@ -70,6 +70,10 @@ class GameRepository {
         new gamePlayersAT(mPlayersDAO).execute(id);
     }
 
+    public void deletePlayer(Player player) {
+        new deletePlayerAT(mPlayersDAO).execute(player);
+    }
+
     private static class insertAT extends AsyncTask<Game, Void, Void> {
         GamesDAO mGamesDAO;
 
@@ -150,6 +154,19 @@ class GameRepository {
         @Override
         protected Void doInBackground(Integer... id) {
             Game.setPlayers(mPlayerDAO.getGamePlayers(id));
+            return null;
+        }
+    }
+
+    private class deletePlayerAT extends AsyncTask<Player, Void, Void>{
+        PlayersDAO mPlayersDAO;
+        public deletePlayerAT(PlayersDAO playersDAO) {
+            mPlayersDAO = playersDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Player... players) {
+            mPlayersDAO.delete(players);
             return null;
         }
     }

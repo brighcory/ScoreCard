@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.merlin.bright.cory.scorecard.R;
 import com.merlin.bright.cory.scorecard.gameObjects.Game;
 import com.merlin.bright.cory.scorecard.gameObjects.Player;
+import com.merlin.bright.cory.scorecard.ui.MainActivity;
 
 import java.util.ArrayList;
 
@@ -66,6 +67,22 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
                 dialog.show();
             }
         });
+        holder.playNameTextView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setTitle("Delete Player");
+                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        MainActivity.deletePlayer(mPlayers.get(holder.getAdapterPosition()));
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+                return true;
+            }
+        });
         String playersScore = String.valueOf(mPlayers.get(position).getScore());
         holder.playerScore.setText(playersScore);
         holder.plusButton.setOnClickListener(new View.OnClickListener() {
@@ -83,16 +100,20 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
     }
 
     private void addScore(ViewHolder holder, String s) {
-        try {
-            int scoreDelta = Integer.parseInt(s);
-            int scoreUpdate = mPlayers.get(holder.getAdapterPosition())
-                    .getScore() + scoreDelta;
-            mPlayers.get(holder.getAdapterPosition()).setScore(scoreUpdate);
-            holder.playerScore.setText(String.valueOf(scoreUpdate));
-        } catch (NumberFormatException e) {
-            Toast.makeText(mContext, "Need a number", Toast.LENGTH_SHORT)
-                    .show();
-        }
+        int scoreDelta;
+        if (s.equals("-")) scoreDelta = -1;
+        else
+            try {
+                scoreDelta = Integer.parseInt(s);
+            } catch (NumberFormatException e) {
+                scoreDelta = 1;
+                Toast.makeText(mContext, "Add 1", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        int scoreUpdate = mPlayers.get(holder.getAdapterPosition())
+                .getScore() + scoreDelta;
+        mPlayers.get(holder.getAdapterPosition()).setScore(scoreUpdate);
+        holder.playerScore.setText(String.valueOf(scoreUpdate));
     }
 
 
