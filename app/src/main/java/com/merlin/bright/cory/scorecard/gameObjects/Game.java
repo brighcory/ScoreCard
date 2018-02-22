@@ -7,9 +7,11 @@ import android.arch.persistence.room.PrimaryKey;
 import com.merlin.bright.cory.scorecard.ui.MainActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by cory on 12/6/17.
+ * Game Object
  */
 @Entity
 public class Game {
@@ -21,21 +23,21 @@ public class Game {
     private boolean mWinnerHighest = true;
     private boolean mTeam = false;
     @Ignore
-    private ArrayList<Player> mPlayers = new ArrayList<>();
+    private static ArrayList<Player> mPlayers = new ArrayList<>();
 
     public Game(String gameName, boolean winnerHighest, boolean team) {
         mGameName = gameName;
         mWinnerHighest = winnerHighest;
         mTeam = team;
-        for (Player player: MainActivity.mPlayers){
-            if (player.getGameId()==id){
-                mPlayers.add(player);
-            }
-        }
+        getDatabasePlayers();
+    }
+
+    private void getDatabasePlayers() {
+        MainActivity.getPlayers(getId());
     }
 
     public void addPlayerToGame() {
-        Player player = new Player("Player", getId());
+        Player player = new Player("Player " + (mPlayers.size() + 1), getId());
         mPlayers.add(player);
     }
 
@@ -97,11 +99,17 @@ public class Game {
     }
 
     public ArrayList<Player> getPlayers() {
-        return mPlayers;
+        if(mPlayers.isEmpty()){
+            addPlayerToGame();
+            return mPlayers;
+        } else {
+            getDatabasePlayers();
+            return mPlayers;
+        }
     }
 
-    public void setPlayers(ArrayList<Player> players) {
-        mPlayers = players;
+    public static void setPlayers(List<Player> players) {
+        mPlayers.addAll(players);
     }
 
     public int getWinningScore() {

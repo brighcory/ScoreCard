@@ -52,12 +52,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        try {
-            mPlayers.addAll(mGameViewModel.getPlayers().getValue());
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,5 +136,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static void insert(ArrayList<Player> players) {
         mGameViewModel.insert(players);
+    }
+
+    public static void getPlayers(int id) {
+        mGameViewModel.getGamePlayers(id);
     }
 }

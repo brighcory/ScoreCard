@@ -45,34 +45,35 @@ public class PlayGameActivity extends Activity {
             @Override
             public void onClick(View view) {
                 mPlayAdapter.addPlayer();
-                mPlayAdapter.updatePlayers();
             }
         });
 
-        final Intent replyIntent = new Intent();
-        replyIntent.putExtra(EXTRA_REPLY, gameNumber);
         saveGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveTheGame(replyIntent);
+                saveTheGame();
             }
         });
         deleteGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteTheGame(replyIntent);
+                deleteTheGame();
             }
         });
     }
 
-    private void saveTheGame(Intent replyIntent) {
+    private void saveTheGame() {
+        Intent replyIntent = new Intent();
+        replyIntent.putExtra(EXTRA_REPLY, gameNumber);
         MainActivity.updateGame(gameNumber);
         MainActivity.insert(playingGame.getPlayers());
         setResult(RESULT_OK, replyIntent);
         finish();
     }
 
-    private void deleteTheGame(Intent replyIntent) {
+    private void deleteTheGame() {
+        Intent replyIntent = new Intent();
+        replyIntent.putExtra(EXTRA_REPLY, gameNumber);
         MainActivity.deleteGame(gameNumber);
         setResult(RESULT_CANCELED, replyIntent);
         finish();

@@ -101,16 +101,10 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
         return mPlayers.size();
     }
 
-    public void updatePlayers() {
-        mPlayers = mGame.getPlayers();
+    public void addPlayer() {
+        mGame.addPlayerToGame();
         notifyDataSetChanged();
     }
-
-    public void addPlayer() {
-        mPlayers.add(new Player("Player " + (mPlayers.size()+1),
-                mGame.getId()));
-    }
-
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView playNameTextView;

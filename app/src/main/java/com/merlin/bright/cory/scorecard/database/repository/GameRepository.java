@@ -66,6 +66,10 @@ class GameRepository {
             new updatePlayerAT(mPlayersDAO).execute(player);
     }
 
+    public void getGamePlayers(int id) {
+        new gamePlayersAT(mPlayersDAO).execute(id);
+    }
+
     private static class insertAT extends AsyncTask<Game, Void, Void> {
         GamesDAO mGamesDAO;
 
@@ -132,6 +136,20 @@ class GameRepository {
         @Override
         protected Void doInBackground(Player... players) {
             mGamesDAO.update(players);
+            return null;
+        }
+    }
+
+    private static class gamePlayersAT extends AsyncTask<Integer, Void, Void> {
+        PlayersDAO mPlayerDAO;
+
+        gamePlayersAT(PlayersDAO dao) {
+            mPlayerDAO = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Integer... id) {
+            Game.setPlayers(mPlayerDAO.getGamePlayers(id));
             return null;
         }
     }

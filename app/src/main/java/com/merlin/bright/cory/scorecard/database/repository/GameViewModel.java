@@ -53,4 +53,7 @@ public class GameViewModel extends AndroidViewModel {
         mRepository.update(player);
     }
 
+    public void getGamePlayers(int id) {
+        mRepository.getGamePlayers(id);
+    }
 }

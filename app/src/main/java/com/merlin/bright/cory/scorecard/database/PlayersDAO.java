@@ -24,11 +24,11 @@ public interface PlayersDAO {
     @Delete
     void delete(Player player);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Player... players);
 
     @Query("SELECT * FROM player WHERE gameId IS :id")
-    List<Player> getGamePlayers(int id);
+    List<Player> getGamePlayers(Integer... id);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void update(Player... players);
