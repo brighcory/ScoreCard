@@ -9,6 +9,7 @@ import com.merlin.bright.cory.scorecard.database.GamesDAO;
 import com.merlin.bright.cory.scorecard.database.PlayersDAO;
 import com.merlin.bright.cory.scorecard.gameObjects.Game;
 import com.merlin.bright.cory.scorecard.gameObjects.Player;
+import com.merlin.bright.cory.scorecard.ui.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -153,7 +154,10 @@ class GameRepository {
 
         @Override
         protected Void doInBackground(Integer... id) {
-            Game.setPlayers(mPlayerDAO.getGamePlayers(id));
+            for (Game game: MainActivity.mGames){
+                game.setPa
+            }
+            MainActivity.mGames.get().setPlayers(mPlayerDAO.getGamePlayers(id));
             return null;
         }
     }

@@ -27,7 +27,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final int GAME_REQUEST_CODE = 1;
     public static ArrayList<Game> mGames = new ArrayList<>();
-    public static ArrayList<Player> mPlayers = new ArrayList<>();
     private GamesAdapter gamesAdapter;
     public static final String NEW_GAME_INDEX = "New_Game_Index";
     static GameViewModel mGameViewModel;

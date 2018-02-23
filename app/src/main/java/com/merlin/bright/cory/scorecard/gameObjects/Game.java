@@ -29,6 +29,7 @@ public class Game {
         mGameName = gameName;
         mWinnerHighest = winnerHighest;
         mTeam = team;
+        mWinner = getWinner();
         getDatabasePlayers();
     }
 
@@ -99,13 +100,7 @@ public class Game {
     }
 
     public ArrayList<Player> getPlayers() {
-        if(mPlayers.isEmpty()){
-            addPlayerToGame();
-            return mPlayers;
-        } else {
-            getDatabasePlayers();
-            return mPlayers;
-        }
+        return mPlayers;
     }
 
     public static void setPlayers(List<Player> players) {
