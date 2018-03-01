@@ -19,6 +19,7 @@ public class GameViewModel extends AndroidViewModel {
     private GameRepository mRepository;
     private LiveData<List<Game>> mGames;
     private LiveData<List<Player>> mPlayers;
+
     public GameViewModel(@NonNull Application application) {
         super(application);
         mRepository = new GameRepository(application);
@@ -26,10 +27,15 @@ public class GameViewModel extends AndroidViewModel {
         mPlayers = mRepository.getPlayers();
     }
 
-    public LiveData<List<Game>> getGames(){return mGames;}
-    public LiveData<List<Player>> getPlayers(){return mPlayers;}
+    public LiveData<List<Game>> getGames() {
+        return mGames;
+    }
 
-    public void insert(Game game){
+    public LiveData<List<Player>> getPlayers() {
+        return mPlayers;
+    }
+
+    public void insert(Game game) {
         mRepository.insert(game);
     }
 
@@ -47,14 +53,6 @@ public class GameViewModel extends AndroidViewModel {
 
     public void insert(ArrayList<Player> players) {
         mRepository.insert(players);
-    }
-
-    public void updatePlayer(ArrayList<Player> player) {
-        mRepository.update(player);
-    }
-
-    public void getGamePlayers(int id) {
-        mRepository.getGamePlayers(id);
     }
 
     public void deletePlayer(Player player) {

@@ -4,10 +4,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
-import com.merlin.bright.cory.scorecard.ui.MainActivity;
-
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by cory on 12/6/17.
@@ -30,11 +27,6 @@ public class Game {
         mWinnerHighest = winnerHighest;
         mTeam = team;
         mWinner = getWinner();
-        getDatabasePlayers();
-    }
-
-    private void getDatabasePlayers() {
-        MainActivity.getPlayers(getId());
     }
 
     public void addPlayerToGame() {
@@ -103,7 +95,7 @@ public class Game {
         return mPlayers;
     }
 
-    public static void setPlayers(List<Player> players) {
+    public void setPlayers(ArrayList<Player> players) {
         mPlayers.addAll(players);
     }
 

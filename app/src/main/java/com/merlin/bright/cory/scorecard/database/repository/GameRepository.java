@@ -9,22 +9,25 @@ import com.merlin.bright.cory.scorecard.database.GamesDAO;
 import com.merlin.bright.cory.scorecard.database.PlayersDAO;
 import com.merlin.bright.cory.scorecard.gameObjects.Game;
 import com.merlin.bright.cory.scorecard.gameObjects.Player;
-import com.merlin.bright.cory.scorecard.ui.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by coryb on 2/2/2018.
+ * Repository for talking with the database.
  */
 
 class GameRepository {
     private GamesDAO mGamesDAO;
+    private Application mApplication;
     private PlayersDAO mPlayersDAO;
     private LiveData<List<Game>> mGames;
     private LiveData<List<Player>> mPlayers;
 
+
     GameRepository(Application application) {
+        mApplication = application;
         GameDatabase database = GameDatabase.getDatabase(application);
         mGamesDAO = database.daoGames();
         mPlayersDAO = database.daoPlayers();
@@ -67,11 +70,11 @@ class GameRepository {
             new updatePlayerAT(mPlayersDAO).execute(player);
     }
 
-    public void getGamePlayers(int id) {
-        new gamePlayersAT(mPlayersDAO).execute(id);
+    void getGamePlayers(Game id) {
+            new gamePlayersAT(mPlayersDAO).execute(id);
     }
 
-    public void deletePlayer(Player player) {
+    void deletePlayer(Player player) {
         new deletePlayerAT(mPlayersDAO).execute(player);
     }
 
@@ -145,26 +148,11 @@ class GameRepository {
         }
     }
 
-    private static class gamePlayersAT extends AsyncTask<Integer, Void, Void> {
-        PlayersDAO mPlayerDAO;
 
-        gamePlayersAT(PlayersDAO dao) {
-            mPlayerDAO = dao;
-        }
-
-        @Override
-        protected Void doInBackground(Integer... id) {
-            for (Game game: MainActivity.mGames){
-                game.setPa
-            }
-            MainActivity.mGames.get().setPlayers(mPlayerDAO.getGamePlayers(id));
-            return null;
-        }
-    }
-
-    private class deletePlayerAT extends AsyncTask<Player, Void, Void>{
+    private static class deletePlayerAT extends AsyncTask<Player, Void, Void> {
         PlayersDAO mPlayersDAO;
-        public deletePlayerAT(PlayersDAO playersDAO) {
+
+        deletePlayerAT(PlayersDAO playersDAO) {
             mPlayersDAO = playersDAO;
         }
 
@@ -173,5 +161,23 @@ class GameRepository {
             mPlayersDAO.delete(players);
             return null;
         }
+    }
+
+    private static class gamePlayersAT extends AsyncTask<Game, Void, Void> {
+        PlayersDAO mPlayersDAO;
+
+        gamePlayersAT(PlayersDAO playersDAO) {
+            mPlayersDAO = playersDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Game... params) {
+            for (int i = 0; i < params.length; i++)
+                params[i].setPlayers(
+                        (ArrayList<Player>) mPlayersDAO.getGamePlayers(params[i].getId()));
+
+            return null;
+        }
+
     }
 }

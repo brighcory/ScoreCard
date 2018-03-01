@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.merlin.bright.cory.scorecard.R;
+import com.merlin.bright.cory.scorecard.database.repository.GameViewModel;
 import com.merlin.bright.cory.scorecard.gameObjects.Game;
 import com.merlin.bright.cory.scorecard.ui.MainActivity;
 import com.merlin.bright.cory.scorecard.ui.PlayGameActivity;
@@ -28,12 +29,13 @@ import java.util.List;
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> {
     private ArrayList<Game> mGames = new ArrayList<>();
     private Context mContext;
-
+    GameViewModel mGameViewModel;
 
     //Constructor
-    public GamesAdapter(Context context, ArrayList<Game> games) {
+    public GamesAdapter(Context context, ArrayList<Game> games, GameViewModel gameViewModel) {
         mGames = games;
         mContext = context;
+        mGameViewModel = gameViewModel;
     }
 
     @Override
@@ -49,21 +51,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
         holder.mGameName.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                final EditText input = new EditText(mContext);
-                builder.setView(input);
-
-                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        String name = String.valueOf(input.getText());
-                        mGames.get(holder.getAdapterPosition()).setGameName(name);
-                        holder.mGameName.setText(name);
-                    }
-                });
-                builder.setTitle("Enter Name of Game");
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                renameGame(holder);
                 return true;
             }
         });
@@ -74,15 +62,32 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
             }
         });
         holder.mWinnerName.setText(mGames.get(position).getWinner());
-        holder.mScoreOfWinner.setText(String.valueOf(mGames.get(position).getWinningScore()));
+    }
 
-        holder.mGameName.setOnLongClickListener(new View.OnLongClickListener() {
+    private void renameGame(final ViewHolder holder) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        final EditText input = new EditText(mContext);
+        builder.setView(input);
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
-            public boolean onLongClick(View view) {
-                deleteGame(holder);
-                return true;
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                String name = String.valueOf(input.getText());
+                mGames.get(holder.getAdapterPosition()).setGameName(name);
+                mGameViewModel.updateGame(mGames.get(holder.getAdapterPosition()));
+//                holder.mGameName.setText(name);
             }
         });
+        builder.setNegativeButton("Delete Game", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                deleteGame(holder);
+            }
+        });
+        builder.setTitle("Enter Name of Game");
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void startGame(ViewHolder holder) {
@@ -104,7 +109,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        MainActivity.deleteGame(holder.getAdapterPosition());
+                        mGameViewModel.deleteGame(mGames.get(holder.getAdapterPosition()));
                     }
                 });
         alertDialog.show();
@@ -124,13 +129,11 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder> 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView mGameName;
         TextView mWinnerName;
-        TextView mScoreOfWinner;
 
         ViewHolder(View itemView) {
             super(itemView);
             mGameName = itemView.findViewById(R.id.gameNameTextView);
             mWinnerName = itemView.findViewById(R.id.winnerTextView);
-            mScoreOfWinner = itemView.findViewById(R.id.scoreTextView);
         }
     }
 }

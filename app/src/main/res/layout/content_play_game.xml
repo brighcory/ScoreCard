@@ -20,20 +20,13 @@
         android:layout_alignParentStart="true"
         android:background="@color/colorPrimaryDark"
         android:padding="15dp"
+        android:paddingLeft="45dp"
+        android:paddingEnd="45dp"
         android:text="@string/save_game"
-        android:textColor="@android:color/background_light" />
+        android:textColor="@android:color/background_light"
+        android:paddingStart="45dp" />
 
-    <Button
-        android:id="@+id/delete_game_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/save_game_button"
-        android:layout_toRightOf="@+id/save_game_button"
-        android:background="@color/colorPrimaryDark"
-        android:padding="15dp"
-        android:text="@string/delete_game"
-        android:textColor="@android:color/background_light" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/listOfPlayers"

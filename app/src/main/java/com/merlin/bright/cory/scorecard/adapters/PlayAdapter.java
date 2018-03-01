@@ -13,9 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.merlin.bright.cory.scorecard.R;
+import com.merlin.bright.cory.scorecard.database.repository.GameViewModel;
 import com.merlin.bright.cory.scorecard.gameObjects.Game;
 import com.merlin.bright.cory.scorecard.gameObjects.Player;
-import com.merlin.bright.cory.scorecard.ui.MainActivity;
 
 import java.util.ArrayList;
 
@@ -28,11 +28,13 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
     private Context mContext;
     private ArrayList<Player> mPlayers = new ArrayList<>();
     private Game mGame;
+    GameViewModel mGameViewModel;
 
-    public PlayAdapter(Context context, Game playingGame) {
+    public PlayAdapter(Context context, Game playingGame, GameViewModel gameViewModel) {
         mContext = context;
         mGame = playingGame;
         mPlayers = playingGame.getPlayers();
+        mGameViewModel = gameViewModel;
     }
 
     @Override
@@ -75,7 +77,9 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
                 builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        MainActivity.deletePlayer(mPlayers.get(holder.getAdapterPosition()));
+                        mGameViewModel.deletePlayer(mPlayers.get(holder.getAdapterPosition()));
+                        mPlayers.remove(holder.getAdapterPosition());
+                        notifyDataSetChanged();
                     }
                 });
                 AlertDialog alertDialog = builder.create();
@@ -122,8 +126,9 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
         return mPlayers.size();
     }
 
-    public void addPlayer() {
-        mGame.addPlayerToGame();
+    public void setPlayers(ArrayList<Player> players) {
+        mPlayers.clear();
+        mPlayers = players;
         notifyDataSetChanged();
     }
 

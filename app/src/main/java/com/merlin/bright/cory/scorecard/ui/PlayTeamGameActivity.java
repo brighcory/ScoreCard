@@ -1,8 +1,11 @@
 package com.merlin.bright.cory.scorecard.ui;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,10 +17,12 @@ import android.widget.TextView;
 
 import com.merlin.bright.cory.scorecard.R;
 import com.merlin.bright.cory.scorecard.adapters.PlayAdapter;
+import com.merlin.bright.cory.scorecard.database.repository.GameViewModel;
 import com.merlin.bright.cory.scorecard.gameObjects.Game;
 import com.merlin.bright.cory.scorecard.gameObjects.Player;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlayTeamGameActivity extends AppCompatActivity {
     Game playingGame;
@@ -33,8 +38,7 @@ public class PlayTeamGameActivity extends AppCompatActivity {
     Button bTeamAddPlayer;
     TextView aTeamScore;
     TextView bTeamScore;
-    Button saveGameButton;
-    Button deleteGameButton;
+    GameViewModel mGameViewModel;
     int gameNumber;
 
 
@@ -47,8 +51,12 @@ public class PlayTeamGameActivity extends AppCompatActivity {
         playingGame = MainActivity.mGames.get(gameNumber);
 
 
+        //Setup Views and Buttons
         aTeamNameView = findViewById(R.id.teamANameTextView);
         bTeamNameView = findViewById(R.id.teamBNameTextView);
+
+        aTeamNameView.setText("Team A");
+        bTeamNameView.setText("Team B");
 
         aTeamAddPlayer = findViewById(R.id.addPlayerToTeamAButton);
         bTeamAddPlayer = findViewById(R.id.addPlayerToTeamBButton);
@@ -56,26 +64,44 @@ public class PlayTeamGameActivity extends AppCompatActivity {
         aTeamScore = findViewById(R.id.teamAScoreTextView);
         bTeamScore = findViewById(R.id.teamBScoreTextView);
 
-        saveGameButton = findViewById(R.id.save_team_game_button);
-        deleteGameButton = findViewById(R.id.delete_team_game_button);
-
-
-        //todo add players to both teams
+        Button saveGameButton = findViewById(R.id.save_team_game_button);
 
         aTeamList = findViewById(R.id.teamAPlayerList);
         bTeamList = findViewById(R.id.teamBPlayerList);
 
+        //Set setup layout Managers
         aTeamList.setLayoutManager(new LinearLayoutManager(this));
         bTeamList.setLayoutManager(new LinearLayoutManager(this));
 
-        aTeamPlayAdapter = new PlayAdapter(this, playingGame);
-        bTeamPlayAdapter = new PlayAdapter(this, playingGame);
+        //Setup View Model and get players from Database
+        mGameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
+        mGameViewModel.getPlayers().observe(this, new Observer<List<Player>>() {
+            @Override
+            public void onChanged(@Nullable List<Player> players) {
+                ArrayList<Player> aPlayerArrayList = new ArrayList<>();
+                ArrayList<Player> bPlayerArrayList = new ArrayList<>();
+                for (Player player : players) {
+                    if (player.getGameId() == playingGame.getId()) {
+                        if (player.getTeamName().equals(aTeamNameView.getText().toString()))
+                            aPlayerArrayList.add(player);
+                        else
+                            bPlayerArrayList.add(player);
+                    }
+                }
+                aTeam = aPlayerArrayList;
+                aTeamPlayAdapter.setPlayers(aPlayerArrayList);
+                bTeam = bPlayerArrayList;
+                bTeamPlayAdapter.setPlayers(bPlayerArrayList);
+            }
+        });
+
+        //Setup The adapters
+        aTeamPlayAdapter = new PlayAdapter(this, playingGame, mGameViewModel);
+        bTeamPlayAdapter = new PlayAdapter(this, playingGame, mGameViewModel);
 
         aTeamList.setAdapter(aTeamPlayAdapter);
         bTeamList.setAdapter(bTeamPlayAdapter);
 
-        aTeamNameView.setText("Team A");
-        bTeamNameView.setText("Team B");
 
         aTeamNameView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,14 +148,16 @@ public class PlayTeamGameActivity extends AppCompatActivity {
         aTeamAddPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //todo add player to team a
+                mGameViewModel.insert(new Player("A Player" + (1 + aTeam.size()),
+                        playingGame.getId()));
             }
         });
 
         bTeamAddPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //todo add player to team b
+                mGameViewModel.insert(new Player("B Player" + (1 + bTeam.size()),
+                        playingGame.getId()));
             }
         });
         aTeamScore.setText(getTeamScore(aTeam));
@@ -142,25 +170,14 @@ public class PlayTeamGameActivity extends AppCompatActivity {
             }
         });
 
-        deleteGameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteTheGame();
-            }
-        });
-
     }
 
     private void saveTheGame() {
-        MainActivity.updateGame(gameNumber);
         Intent replyIntent = getIntent();
+        mGameViewModel.insert(aTeam);
+        mGameViewModel.insert(bTeam);
+        mGameViewModel.updateGame(playingGame);
         setResult(RESULT_OK, replyIntent);
-        finish();
-    }
-
-    private void deleteTheGame() {
-        MainActivity.deleteGame(gameNumber);
-        setResult(RESULT_CANCELED);
         finish();
     }
 
