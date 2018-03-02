@@ -5,7 +5,6 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
 import com.merlin.bright.cory.scorecard.gameObjects.Game;
@@ -13,6 +12,8 @@ import com.merlin.bright.cory.scorecard.gameObjects.Player;
 
 /**
  * Created by coryb on 1/30/2018.
+ *
+ * Database for the App Written in Room
  */
 @Database(entities = {Game.class, Player.class}, version = 1)
 public abstract class GameDatabase extends RoomDatabase {
@@ -41,23 +42,7 @@ public abstract class GameDatabase extends RoomDatabase {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
-            new PopulateDB(INSTANCE).execute();
         }
     };
 
-    private static class PopulateDB extends AsyncTask<Void, Void, Void> {
-        private final GamesDAO mGamesDAO;
-
-        private PopulateDB(GameDatabase database) {
-            mGamesDAO = database.daoGames();
-        }
-
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-
-            return null;
-        }
-    }
 }

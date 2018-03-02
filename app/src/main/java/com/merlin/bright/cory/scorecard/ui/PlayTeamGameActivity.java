@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayTeamGameActivity extends AppCompatActivity {
+    public static String aTeamNameString = "Team A";
+    public static String bTeamNameString = "Team B";
     Game playingGame;
     ArrayList<Player> aTeam = new ArrayList<>();
     ArrayList<Player> bTeam = new ArrayList<>();
@@ -55,8 +57,8 @@ public class PlayTeamGameActivity extends AppCompatActivity {
         aTeamNameView = findViewById(R.id.teamANameTextView);
         bTeamNameView = findViewById(R.id.teamBNameTextView);
 
-        aTeamNameView.setText("Team A");
-        bTeamNameView.setText("Team B");
+        aTeamNameView.setText(aTeamNameString);
+        bTeamNameView.setText(bTeamNameString);
 
         aTeamAddPlayer = findViewById(R.id.addPlayerToTeamAButton);
         bTeamAddPlayer = findViewById(R.id.addPlayerToTeamBButton);
@@ -80,12 +82,15 @@ public class PlayTeamGameActivity extends AppCompatActivity {
             public void onChanged(@Nullable List<Player> players) {
                 ArrayList<Player> aPlayerArrayList = new ArrayList<>();
                 ArrayList<Player> bPlayerArrayList = new ArrayList<>();
-                for (Player player : players) {
-                    if (player.getGameId() == playingGame.getId()) {
-                        if (player.getTeamName().equals(aTeamNameView.getText().toString()))
-                            aPlayerArrayList.add(player);
-                        else
-                            bPlayerArrayList.add(player);
+                if (players != null) {
+                    for (Player player : players) {
+                        if (player.getGameId() == playingGame.getId()) {
+                            if (aTeamNameString.equals(player.getTeamName())) {
+                                aPlayerArrayList.add(player);
+                            } else {
+                                bPlayerArrayList.add(player);
+                            }
+                        }
                     }
                 }
                 aTeam = aPlayerArrayList;
@@ -119,7 +124,6 @@ public class PlayTeamGameActivity extends AppCompatActivity {
                         aTeamNameView.setText(name);
                     }
                 });
-
                 builder.setTitle("Enter Name of Team").create().show();
             }
         });
@@ -131,7 +135,6 @@ public class PlayTeamGameActivity extends AppCompatActivity {
                         new AlertDialog.Builder(PlayTeamGameActivity.this);
                 final EditText input = new EditText(PlayTeamGameActivity.this);
                 builder.setView(input);
-
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -140,7 +143,6 @@ public class PlayTeamGameActivity extends AppCompatActivity {
                         bTeamNameView.setText(name);
                     }
                 });
-
                 builder.setTitle("Enter Name of Team").create().show();
             }
         });
@@ -149,7 +151,7 @@ public class PlayTeamGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mGameViewModel.insert(new Player("A Player" + (1 + aTeam.size()),
-                        playingGame.getId()));
+                        playingGame.getId(), aTeamNameString));
             }
         });
 
@@ -184,7 +186,7 @@ public class PlayTeamGameActivity extends AppCompatActivity {
     private String getTeamScore(ArrayList<Player> team) {
         int teamScore = 0;
         for (Player player : team) {
-            teamScore = +player.getScore();
+            teamScore += player.getScore();
         }
         return teamScore + "";
     }

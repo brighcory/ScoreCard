@@ -2,6 +2,7 @@ package com.merlin.bright.cory.scorecard.gameObjects;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
@@ -23,11 +24,18 @@ public class Player {
     private int gameId;
     private String mPlayerName;
     private int mScore = 0;
-    private String teamName;
+    private String mTeamName;
 
     public Player(String playerName, int gameId) {
         mPlayerName = playerName;
         this.gameId = gameId;
+    }
+
+    @Ignore
+    public Player(String playerName, int gameId, String teamName) {
+        mPlayerName = playerName;
+        this.gameId = gameId;
+        mTeamName = teamName;
     }
 
     public int getId() {
@@ -55,11 +63,11 @@ public class Player {
     }
 
     public String getTeamName() {
-        return teamName;
+        return mTeamName;
     }
 
     public void setTeamName(String teamName) {
-        this.teamName = teamName;
+        this.mTeamName = teamName;
     }
 
     public int getGameId() {
