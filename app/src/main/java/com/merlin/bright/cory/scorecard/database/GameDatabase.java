@@ -15,7 +15,7 @@ import com.merlin.bright.cory.scorecard.gameObjects.Player;
  *
  * Database for the App Written in Room
  */
-@Database(entities = {Game.class, Player.class}, version = 1)
+@Database(entities = {Game.class, Player.class}, version = 2)
 public abstract class GameDatabase extends RoomDatabase {
     public abstract GamesDAO daoGames();
 

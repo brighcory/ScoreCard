@@ -78,6 +78,10 @@ class GameRepository {
         new deletePlayerAT(mPlayersDAO).execute(player);
     }
 
+    public void updatePlayer(Player player) {
+        new updatePlayerAT(mPlayersDAO).execute(player);
+    }
+
     private static class insertAT extends AsyncTask<Game, Void, Void> {
         GamesDAO mGamesDAO;
 

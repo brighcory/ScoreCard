@@ -68,8 +68,9 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Team", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                mGameViewModel.insert(new Game("Game's Name",
-                        true, true));
+                Game game = new Game("Game's Name",
+                        true, true);
+                mGameViewModel.insert(game);
                 Intent newGameIntent =
                         new Intent(MainActivity.this,
                                 PlayTeamGameActivity.class);
@@ -80,8 +81,9 @@ public class MainActivity extends AppCompatActivity {
         builder.setNegativeButton("Individual", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                mGameViewModel.insert(new Game("No Team Game",
-                        true, false));
+                Game game = new Game("No Team Game",
+                        true, false);
+                mGameViewModel.insert(game);
                 Intent newGameIntent = new Intent(MainActivity.this,
                         PlayGameActivity.class);
                 newGameIntent.putExtra(NEW_GAME_INDEX, mGames.size() - 1);

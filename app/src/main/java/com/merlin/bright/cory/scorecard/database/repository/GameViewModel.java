@@ -58,4 +58,8 @@ public class GameViewModel extends AndroidViewModel {
     public void deletePlayer(Player player) {
         mRepository.deletePlayer(player);
     }
+
+    public void updatePlayer(Player player) {
+        mRepository.updatePlayer(player);
+    }
 }

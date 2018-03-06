@@ -124,19 +124,10 @@
         android:layout_alignParentStart="true"
         android:background="@color/colorPrimaryDark"
         android:padding="15dp"
+        android:paddingLeft="45dp"
+        android:paddingEnd="45dp"
         android:text="@string/save_game"
-        android:textColor="@android:color/background_light" />
-
-    <Button
-        android:id="@+id/delete_team_game_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/save_team_game_button"
-        android:layout_toRightOf="@+id/save_team_game_button"
-        android:background="@color/colorPrimaryDark"
-        android:padding="15dp"
-        android:text="@string/delete_game"
-        android:textColor="@android:color/background_light" />
+        android:textColor="@android:color/background_light"
+        android:paddingStart="45dp" />
 
 </RelativeLayout>

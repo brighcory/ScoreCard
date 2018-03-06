@@ -50,40 +50,13 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
         holder.playNameTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                final EditText input = new EditText(mContext);
-                builder.setView(input);
-
-                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        String name = String.valueOf(input.getText());
-                        mPlayers.get(holder.getAdapterPosition()).setPlayerName(name);
-                        holder.playNameTextView.setText(name);
-                    }
-                });
-
-                builder.setTitle("Enter Name of Player");
-                AlertDialog dialog = builder.create();
-
-                dialog.show();
+                changeNameOfPlayer(holder);
             }
         });
         holder.playNameTextView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setTitle("Delete Player");
-                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        mGameViewModel.deletePlayer(mPlayers.get(holder.getAdapterPosition()));
-                        mPlayers.remove(holder.getAdapterPosition());
-                        notifyDataSetChanged();
-                    }
-                });
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
+                deletePlayer(holder);
                 return true;
             }
         });
@@ -103,21 +76,55 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
         });
     }
 
-    private void addScore(ViewHolder holder, String s) {
-        int scoreDelta;
-        if (s.equals("-")) scoreDelta = -1;
-        else
-            try {
-                scoreDelta = Integer.parseInt(s);
-            } catch (NumberFormatException e) {
-                scoreDelta = 1;
-                Toast.makeText(mContext, "Add 1", Toast.LENGTH_SHORT)
-                        .show();
+    private void deletePlayer(final ViewHolder holder) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("Delete Player");
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                mGameViewModel.deletePlayer(mPlayers.get(holder.getAdapterPosition()));
+                mPlayers.remove(holder.getAdapterPosition());
+                notifyDataSetChanged();
             }
-        int scoreUpdate = mPlayers.get(holder.getAdapterPosition())
-                .getScore() + scoreDelta;
-        mPlayers.get(holder.getAdapterPosition()).setScore(scoreUpdate);
-        holder.playerScore.setText(String.valueOf(scoreUpdate));
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void changeNameOfPlayer(final ViewHolder holder) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        final EditText input = new EditText(mContext);
+        builder.setView(input);
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String name = String.valueOf(input.getText());
+                mPlayers.get(holder.getAdapterPosition()).setPlayerName(name);
+                mGameViewModel.updatePlayer(mPlayers.get(holder.getAdapterPosition()));
+                holder.playNameTextView.setText(name);
+            }
+        });
+
+        builder.setTitle("Enter Name of Player");
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+    }
+
+    private void addScore(ViewHolder holder, String s) {
+        try {
+            int scoreDelta = Integer.parseInt(s);
+            int scoreUpdate = mPlayers.get(holder.getAdapterPosition())
+                    .getScore() + scoreDelta;
+            mPlayers.get(holder.getAdapterPosition()).setScore(scoreUpdate);
+            holder.playerScore.setText(String.valueOf(scoreUpdate));
+            holder.scoreAddText.getText().clear();
+            mGameViewModel.updatePlayer(mPlayers.get(holder.getAdapterPosition()));
+        } catch (NumberFormatException e) {
+            Toast.makeText(mContext, "Enter a Number", Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
 
 
