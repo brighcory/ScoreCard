@@ -101,20 +101,14 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         startObserver();
-        int gameNumber = data.getIntExtra(PlayGameActivity.EXTRA_REPLY, 0);
         if (requestCode == GAME_REQUEST_CODE && resultCode == RESULT_OK) {
+            int gameNumber = data.getIntExtra(PlayGameActivity.EXTRA_REPLY, 0);
             updateGame(gameNumber);
-        } else {
-            deleteGame(gameNumber);
         }
     }
 
     public void updateGame(int gameNumber) {
         mGameViewModel.updateGame(mGames.get(gameNumber));
-    }
-
-    public void deleteGame(int gameNumber) {
-        mGameViewModel.deleteGame(mGames.get(gameNumber));
     }
 
     @Override

@@ -28,8 +28,8 @@ public class PlayTeamGameActivity extends AppCompatActivity {
     public static String aTeamNameString = "Team A";
     public static String bTeamNameString = "Team B";
     Game playingGame;
-    ArrayList<Player> aTeam = new ArrayList<>();
-    ArrayList<Player> bTeam = new ArrayList<>();
+    static ArrayList<Player> aTeam = new ArrayList<>();
+    static ArrayList<Player> bTeam = new ArrayList<>();
     RecyclerView aTeamList;
     RecyclerView bTeamList;
     PlayAdapter aTeamPlayAdapter;
@@ -95,8 +95,10 @@ public class PlayTeamGameActivity extends AppCompatActivity {
                 }
                 aTeam = aPlayerArrayList;
                 aTeamPlayAdapter.setPlayers(aPlayerArrayList);
+                aTeamScore.setText(getTeamScore(aTeam));
                 bTeam = bPlayerArrayList;
                 bTeamPlayAdapter.setPlayers(bPlayerArrayList);
+                bTeamScore.setText(getTeamScore(bTeam));
             }
         });
 
@@ -162,8 +164,7 @@ public class PlayTeamGameActivity extends AppCompatActivity {
                         playingGame.getId()));
             }
         });
-        aTeamScore.setText(getTeamScore(aTeam));
-        bTeamScore.setText(getTeamScore(bTeam));
+
 
         saveGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,7 +172,8 @@ public class PlayTeamGameActivity extends AppCompatActivity {
                 saveTheGame();
             }
         });
-
+        aTeamScore.setText(getTeamScore(aTeam));
+        bTeamScore.setText(getTeamScore(bTeam));
     }
 
     private void saveTheGame() {

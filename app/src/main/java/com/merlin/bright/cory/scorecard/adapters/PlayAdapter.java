@@ -28,12 +28,11 @@ public class PlayAdapter extends RecyclerView.Adapter<PlayAdapter.ViewHolder> {
     private Context mContext;
     private ArrayList<Player> mPlayers = new ArrayList<>();
     private Game mGame;
-    GameViewModel mGameViewModel;
+    private GameViewModel mGameViewModel;
 
     public PlayAdapter(Context context, Game playingGame, GameViewModel gameViewModel) {
         mContext = context;
         mGame = playingGame;
-        mPlayers = playingGame.getPlayers();
         mGameViewModel = gameViewModel;
     }
 

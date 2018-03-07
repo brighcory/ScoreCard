@@ -10,6 +10,8 @@
         android:id="@+id/playerNameTextView"
         android:layout_width="149dp"
         android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        android:layout_marginStart="5dp"
         android:layout_weight="1"
         android:ems="10"
         android:textColor="@color/colorPrimary"
